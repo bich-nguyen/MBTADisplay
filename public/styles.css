@@ -1,28 +1,29 @@
 /* ----- MBTA SCREENS SYSTEM ----- */
 /* Maximum readability for distant, short-viewing-time displays */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
 :root {
     /* MBTA system colors */
-    --mbta-green: #00843D;
-    --mbta-red: #DA291C;
-    --mbta-blue: #003DA5;
-    --mbta-orange: #ED8B00;
-    --mbta-commuter: #80276C;
-    --mbta-bus: #FFC72C;
-    --mbta-bluebike: #2277B3;
-    --mbta-cool-black-15: #171F26;
-    --mbta-warm-white-90: #E6E4E1;
-    --mbta-warm-white-85: #D9D6D0;
-    --mbta-warm-white-80: #CCCBC8;
-    --mbta-true-white: #FFFFFF;
+    --mbta-green: #00843d;
+    --mbta-red: #da291c;
+    --mbta-blue: #003da5;
+    --mbta-orange: #ed8b00;
+    --mbta-commuter: #80276c;
+    --mbta-bus: #ffc72c;
+    --mbta-bluebike: #2277b3;
+    --mbta-cool-black-15: #171f26;
+    --mbta-warm-white-90: #e6e4e1;
+    --mbta-warm-white-85: #d9d6d0;
+    --mbta-warm-white-80: #cccbc8;
+    --mbta-true-white: #ffffff;
 
-     /* Typography */
+    /* Typography */
     --spacing-base: 1.5em;
-    --font-family-mono: "Helvetica Neue", Inter, -apple-system, BlinkMacSystemFont, 
-                       "Segoe UI", Roboto, Arial, sans-serif;    
+    --font-family-mono:
+        "Helvetica Neue", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Arial, sans-serif;
     --font-size-base: 0.75em;
     --font-size-small: 0.9em;
     --font-size-code: 0.95em;
@@ -64,8 +65,17 @@ body {
     margin-bottom: 2rem;
 }
 
+.container-ferry {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: min-content;
+    grid-auto-flow: row;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
 .time.stopped {
-    color: #FFC72C;  /* MBTA bus yellow - stands out */
+    color: #ffc72c; /* MBTA bus yellow - stands out */
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.02em;
@@ -73,7 +83,7 @@ body {
 
 .no-schedules {
     font-family: var(--font-family-mono);
-    color: #505A62;
+    color: #505a62;
     padding: 0.75rem 0;
     text-align: left;
     font-style: italic;
@@ -88,14 +98,14 @@ body {
     padding: 0.75rem 1rem;
     margin-top: auto;
     border-radius: 4px;
-    background: #FFF7BF;
-    border-left: 4px solid #FFDD00;
+    background: #fff7bf;
+    border-left: 4px solid #ffdd00;
     font-family: var(--font-family-mono);
 }
 
 .alert-banner.alert-high {
-    background: #FFE5E5;
-    border-left-color: #DA291C;
+    background: #ffe5e5;
+    border-left-color: #da291c;
 }
 
 .alert-icon {
@@ -108,15 +118,14 @@ body {
 
 .alert-header {
     font-weight: 700;
-    color: #171F26;
+    color: #171f26;
     margin-bottom: 0.25rem;
 }
 
 .alert-description {
-    color: #505A62;
+    color: #505a62;
     line-height: 1.4;
 }
-
 
 /* ===== PREDICTION ROWS ===== */
 .prediction-row {
@@ -151,11 +160,11 @@ body {
 }
 
 .pred-time.realtime {
-  color: green;
+    color: green;
 }
 
 .pred-time.scheduled {
-  color: black;
+    color: black;
 }
 
 .time.now {
@@ -174,161 +183,173 @@ body {
 /* No box-shadow, no hover effects, no transforms, no transitions, no gradients */
 
 .mbta-card {
-  border: 1px solid #E6E7E8;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    border: 1px solid #e6e7e8;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 /* HEADER */
 /*top left bottom right*/
 .mbta-card-header {
-  color: white;
-  font-size: 20px;
-  font-weight: 700;
-  padding: 12px 16px;
-  text-transform: uppercase;
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 12px 16px;
+    text-transform: uppercase;
 }
 
 .cr-card {
-  border: 1px solid black;
+    border: 1px solid black;
 }
 
 .cr-grid {
-  display: grid;
-  grid-template-columns: 160px 1fr 90px 60px;
-
+    display: grid;
+    grid-template-columns: 160px 1fr 90px 60px;
 }
 
 .cr-header {
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12px;
 }
 
 /* BODY */
 .mbta-card-body {
-  background: #F2F3F5;
-  height: 260px; /* makes panels uniform */
-  display: flex;
-  flex-direction: column;
+    background: #f2f3f5;
+    height: 260px; /* makes panels uniform */
+    display: flex;
+    flex-direction: column;
 }
 
-.route-Red .mbta-card-header { background:#DA291C; }
-.route-Orange .mbta-card-header { background:#ED8B00; }
-.route-Blue .mbta-card-header { background:#003DA5; }
-.route-Green .mbta-card-header { background:#00843D; }
-.route-CR .mbta-card-header { background:#80276C;   font-size: 16px;
+.route-Red .mbta-card-header {
+    background: #da291c;
+}
+.route-Orange .mbta-card-header {
+    background: #ed8b00;
+}
+.route-Blue .mbta-card-header {
+    background: #003da5;
+}
+.route-Green .mbta-card-header {
+    background: #00843d;
+}
+.route-CR .mbta-card-header {
+    background: #80276c;
+    font-size: 16px;
+}
+.route-Boat .mbta-card-header {
+    background: lightblue;
+    font-size: 16px;
 }
 
 /* DIRECTION LABEL */
 
 .direction-header {
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #616161;
-  padding: 10px 16px 1px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #616161;
+    padding: 10px 16px 1px 16px;
 }
 
 /* ROW */
 
 .prediction-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 16px;
-  border-top: 1px solid #D7D8DA;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 16px;
+    border-top: 1px solid #d7d8da;
 }
 
 /* DESTINATION */
 
 .destination-main {
-  font-size: 15px;
-  font-weight: 700;
-  color: #1C1E23;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1c1e23;
 }
 
 .destination-via {
-  font-size: 12px;
-  color: #555;
+    font-size: 12px;
+    color: #555;
 }
 
 /* ===== WEATHER ===== */
 #weather-box {
-  display: flex;
-  grid-column: span 4;
-  justify-content: center;
+    display: flex;
+    grid-column: span 4;
+    justify-content: center;
 }
 
 .weather-card {
-  width: 100%;
-  padding: 20px 28px;
+    width: 100%;
+    padding: 20px 28px;
 
-  border-radius: 1px;
+    border-radius: 1px;
 
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-  background: #4da3ff;
+    background: #4da3ff;
 
-  box-shadow:
-    0 10px 25px rgba(0,0,0,0.25),
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
 .weather-left {
-  display: flex;
-  flex-direction: column;
-  max-width: 70%;
+    display: flex;
+    flex-direction: column;
+    max-width: 70%;
 }
 
 .weather-main {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .weather-temp {
-  font-size: 72px;
-  font-weight: 700;
+    font-size: 72px;
+    font-weight: 700;
 }
 
 .weather-icon {
-  width: 72px;
-  height: 72px;
+    width: 72px;
+    height: 72px;
 }
 
 .weather-desc {
-  font-size: 22px;
-  font-weight: 700;
-  margin-top: 6px;
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 6px;
 }
 
 .weather-detail {
-  margin-top: 4px;
-  font-size: 14px;
+    margin-top: 4px;
+    font-size: 14px;
 }
 
 .weather-right {
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .weather-location {
-  font-size: 22px;
-  font-weight: 600;
+    font-size: 22px;
+    font-weight: 600;
 }
 
 .weather-date {
-  font-size: 14px;
-  opacity: 0.85;
+    font-size: 14px;
+    opacity: 0.85;
 }
 
 #timestamp {
-  font-size: 30px;
-  font-weight: 700;
+    font-size: 30px;
+    font-weight: 700;
 }
