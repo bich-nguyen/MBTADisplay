@@ -136,9 +136,7 @@ const PANELS = [
         title: "Charlestown Ferry",
         elementId: "long-wharf-south-boat-f4",
         routeId: "Boat-F4",
-        services: [
-            service("Boat-F4", 0, "Boat-Long-South", "Charlestown"),
-        ],
+        services: [service("Boat-F4", 0, "Boat-Long-South", "Charlestown")],
     },
 
     // Rowes Wharf -> Hingham
@@ -157,9 +155,7 @@ const PANELS = [
         title: "East Boston Ferry",
         elementId: "boat-long-boat-eastboston",
         routeId: "Boat-EastBoston",
-        services: [
-            service("Boat-EastBoston", 0, "Boat-Long", "Lewis Mall"),
-        ],
+        services: [service("Boat-EastBoston", 0, "Boat-Long", "Lewis Mall")],
     },
 
     // Long Wharf North -> Lynn
@@ -167,9 +163,7 @@ const PANELS = [
         title: "Lynn Ferry",
         elementId: "boat-long-boat-lynn",
         routeId: "Boat-Lynn",
-        services: [
-            service("Boat-Lynn", 0, "Boat-Long", "Blossom Street"),
-        ],
+        services: [service("Boat-Lynn", 0, "Boat-Long", "Blossom Street")],
     },
 
     // Aquarium -> Winthrop
@@ -177,9 +171,7 @@ const PANELS = [
         title: "Winthrop Ferry",
         elementId: "boat-aquarium-boat-f6",
         routeId: "Boat-F6",
-        services: [
-            service("Boat-F6", 0, "Boat-Aquarium", "Winthrop"),
-        ],
+        services: [service("Boat-F6", 0, "Boat-Aquarium", "Winthrop")],
     },
 
     // Aquarium -> Quincy
@@ -187,9 +179,7 @@ const PANELS = [
         title: "Quincy Ferry",
         elementId: "boat-aquarium-boat-f7",
         routeId: "Boat-F7",
-        services: [
-            service("Boat-F7", 0, "Boat-Aquarium", "Quincy"),
-        ],
+        services: [service("Boat-F7", 0, "Boat-Aquarium", "Quincy")],
     },
 ];
 
@@ -465,7 +455,7 @@ function getRouteClass(routeId) {
  * @param {*} panel - a train line
  * @returns
  */
-function renderPanel(panel) {
+function renderSubwayPanel(panel) {
     const container = document.getElementById(panel.elementId);
     if (!container) return;
 
@@ -563,6 +553,81 @@ function renderPanel(panel) {
     }
 }
 
+// /**
+//  * Render commuter rails in PANELS
+//  * @param {*} panel - a train line
+//  * @returns
+//  */
+// function renderCRPanel(panels) {
+//     const container = document.getElementById("south-station-cr");
+//     if (!container) return;
+
+//     const predContainer = container.querySelector(".predictions");
+//     if (!predContainer) return;
+
+//     let html = `
+//         <div class="mbta-card route-CR">
+//             <div class="mbta-card-header">
+//                 South Station Commuter Rail
+//             </div>
+
+//             <div class="cr-grid">
+//                 <div class="cr-header">Line</div>
+//                 <div class="cr-header">Destination</div>
+//                 <div class="cr-header">Time</div>
+//                 <div class="cr-header">Alert</div>
+//         `;
+
+//     panels.forEach((panel) => {
+//         panel.services.forEach((service) => {
+//             const key = buildKey(panel, service);
+//             let preds = getPredictions(realtimeData[key]);
+
+//             preds = preds.filter((p) =>
+//                 p.headsign.includes(service.headsignContains),
+//             );
+//             if (!preds.length) return;
+
+//             const headsign = preds[0].headsign;
+//             const [destination, via] = headsign.split(" via ");
+
+//             // renders predicted time horizontally
+//             const times = preds
+//                 .slice(0, 3)
+//                 .map((p) => {
+//                     return `
+//                         <div class="pred-time ${p.isRealtime ? "realtime" : "scheduled"}">
+//                             <div>${p.isRealtime ? LIVE_ICON : SCHEDULE_ICON} ${formatTime(p.minutes)}</div>
+//                             <div>${p.formattedTime}</div>
+//                         </div>
+//                     `;
+//                 })
+//                 .join("");
+
+//             const p = preds[0];
+//             // puts alerts bottom of panel
+//             const alert = getAlertForRoute(panel.routeId);
+//             html += `<div class="cr-line">${panel.title}</div>
+//                         <div class="cr-destination">${p.headsign}</div>
+
+//                         <div class="pred-times">
+//                             ${times}
+//                     </div>
+
+//                         <div class="cr-alert">
+//                             ${alert ? "⚠️" : ""}
+//                         </div>
+//                     `;
+//         });
+//     });
+//     html += `</div></div>`;
+//     predContainer.innerHTML = html;
+
+//     if (!predContainer.innerHTML.trim()) {
+//         predContainer.innerHTML = '<div class="no-trains">No trains</div>';
+//     }
+// }
+
 /**
  * Renders the weather short and long description, inclcude an icon, temp F, Location, and Date
  */
@@ -635,17 +700,31 @@ function startClock() {
     setInterval(updateClock, 1000);
 }
 
-/** 
+/**
  * Update calls and render.
-*/
+ */
 async function updateAll() {
     await fetchRealtime();
     await fetchAlerts();
     await fetchHourlyForecast();
     await fetchDetailedForecast();
 
-    PANELS.forEach(renderPanel);
     renderWeather();
+
+    PANELS.forEach((panel) => {
+        //if (panel.routeId.startsWith("CR-")) renderCRPanel(panel);
+        //else
+        renderSubwayPanel(panel);
+    });
+
+    // const subwayPanels = PANELS.filter((p) => !p.routeId.startsWith("CR-"));
+    // const crPanels = PANELS.filter((p) => p.routeId.startsWith("CR-"));
+    // renderCRPanel(crPanels);
+    // subwayPanels.forEach((panel) => {
+    //     //if (panel.routeId.startsWith("CR-")) renderCRPanel(panel);
+    //     //else
+    //     renderSubwayPanel(panel);
+    // });
 }
 
 // ===================== START =====================
