@@ -2,12 +2,9 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, minimum-scale=1"
-        />
+         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
         <title>MBTA Tracker</title>
-        <link rel="stylesheet" href="/styles.css" />
+        <link rel="stylesheet" href="styles.css" />
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
@@ -21,7 +18,7 @@
     <body>
         <!-- ================= WEATHER ================= -->
         <div id="weather-box" class="weather-box"></div>
-        
+
         <div class="container-top">
             <!-- ================= RED LINE ================= -->
             <div id="south-station-red">
@@ -35,11 +32,37 @@
             <div id="state-station-blue">
                 <div class="predictions"></div>
             </div>
+            <div id="park-street-green">
+                <div class="predictions"></div>
+            </div>
+            <!-- ================= FERRIES ================= -->
+            <div id="long-wharf-south-boat-f4">
+                <div class="predictions"></div>
+            </div>
+            
+            <div id="boat-rowes-boat-f1">
+                <div class="predictions"></div>
+            </div>
+<!-- SEASONAL FERRY (NOT OPERATING RN)
+            <div id="boat-long-boat-eastboston">
+                <div class="predictions"></div>
+            </div>
+
+            <div id="boat-long-boat-lynn">
+                <div class="predictions"></div>
+            </div>
+
+            <div id="boat-aquarium-boat-f6">
+                <div class="predictions"></div>
+            </div>
+
+            <div id="boat-aquarium-boat-f7">
+                <div class="predictions"></div>
+            </div> -->
         </div>
 
         <div class="container-bottom">
             <!-- ================= COMMUTER RAIL ================= -->
-
             <div id="south-station-cr-greenbush">
                 <div class="predictions"></div>
             </div>
@@ -55,6 +78,7 @@
             <div id="south-station-cr-worcester">
                 <div class="predictions"></div>
             </div>
+
             <div id="south-station-cr-franklin">
                 <div class="predictions"></div>
             </div>
@@ -66,41 +90,11 @@
             <div id="south-station-cr-kingston">
                 <div class="predictions"></div>
             </div>
-
+            
             <div id="south-station-cr-needham">
                 <div class="predictions"></div>
             </div>
-
-            
         </div>
-
-        <div id="south-station-cr">
-                <div class="predictions"></div>
-            </div>
-
-        <div class="container-ferry">
-            <!-- ================= FERRY ================= -->
-            <div id="long-wharf-south-boat-f4">
-                <div class="predictions"></div>
-            </div>
-            <div id="boat-rowes-boat-f1">
-                <div class="predictions"></div>
-            </div>
-            <!-- SEASONAL FERRY (NOT OPERATING RN)
-            <div id="boat-long-boat-eastboston">
-                <div class="predictions"></div>
-            </div>
-            <div id="boat-long-boat-lynn">
-                <div class="predictions"></div>
-            </div>
-            <div id="boat-aquarium-boat-f6">
-                <div class="predictions"></div>
-            </div>
-            <div id="boat-aquarium-boat-f7">
-                <div class="predictions"></div>
-            </div> -->
-        </div>
-
-        <script src="/app.js"></script>
+        <script src="app.js"></script>
     </body>
 </html>

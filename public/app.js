@@ -8,7 +8,7 @@
  * @returns The service structure.
  */
 function service(routeId, directionId, stopId, destination) {
-    const isBlueOrGreen = routeId === "Green" || routeId === "Blue";
+    const isBlueOrGreen = routeId === "Green" || routeId === "Blue" || routeId.startsWith("Green-");
     const direction = isBlueOrGreen
         ? directionId === 0
             ? "Westbound"
@@ -18,6 +18,7 @@ function service(routeId, directionId, stopId, destination) {
           : "Northbound";
 
     return {
+        routeId,
         label: `${direction}`,
         directionId,
         stopId,
@@ -32,8 +33,8 @@ const PANELS = [
     // South Station – Red Line
     {
         title: "Red Line",
-        // naming convention: {station-name}-{routeId}
         elementId: "south-station-red",
+        StationName: "South Station",
         routeId: "Red",
         services: [
             service("Red", 0, "place-sstat", "Ashmont", "Red-1-0"),
@@ -46,6 +47,7 @@ const PANELS = [
     {
         title: "Orange Line",
         elementId: "state-station-orange",
+        StationName: "South Station",
         routeId: "Orange",
         services: [
             service("Orange", 0, "place-state", "Forest Hills", "Orange-A-0"),
@@ -57,6 +59,7 @@ const PANELS = [
     {
         title: "Blue Line",
         elementId: "state-station-blue",
+        StationName: "South Station",
         routeId: "Blue",
         services: [
             service("Blue", 0, "place-state", "Bowdoin", "Blue-6-0"),
@@ -64,16 +67,34 @@ const PANELS = [
         ],
     },
 
+    // Park Street – Green Line (all branches)
+    {
+        title: "Green Line",
+        elementId: "park-street-green",
+        StationName: "Park Street",
+        routeId: "Green",
+        services: [
+            service("Green-B", 0, "place-pktrm", "Boston College"),
+            service("Green-C", 0, "place-pktrm", "Cleveland Circle"),
+            service("Green-D", 0, "place-pktrm", "Riverside"),
+            service("Green-E", 0, "place-pktrm", "Heath Street"),
+            service("Green-E", 1, "place-pktrm", "Medford"),
+            service("Green-B", 1, "place-pktrm", "Lechmere"),
+        ],
+    },
+
     // South Station – Commuter Rail
     {
         title: "Greenbush Line",
         elementId: "south-station-cr-greenbush",
+        StationName: "South Station",
         routeId: "CR-Greenbush",
         services: [service("CR-Greenbush", 0, "place-sstat", "Greenbush")],
     },
     {
         title: "Fairmount Line",
         elementId: "south-station-cr-fairmount",
+        StationName: "South Station",
         routeId: "CR-Fairmount",
         services: [
             service("CR-Fairmount", 0, "place-sstat", "Readville"),
@@ -83,6 +104,7 @@ const PANELS = [
     {
         title: "Fall River/New Bedford Line",
         elementId: "south-station-cr-newbedford",
+        StationName: "South Station",
         routeId: "CR-NewBedford",
         services: [
             service("CR-NewBedford", 0, "place-sstat", "New Bedford"),
@@ -92,6 +114,7 @@ const PANELS = [
     {
         title: "Framingham/Worcester Line",
         elementId: "south-station-cr-worcester",
+        StationName: "South Station",
         routeId: "CR-Worcester",
         services: [
             service("CR-Worcester", 0, "place-sstat", "Worcester"),
@@ -101,6 +124,7 @@ const PANELS = [
     {
         title: "Franklin/Foxboro Line",
         elementId: "south-station-cr-franklin",
+        StationName: "South Station",
         routeId: "CR-Franklin",
         services: [
             service("CR-Franklin", 0, "place-sstat", "Foxboro"),
@@ -111,6 +135,7 @@ const PANELS = [
     {
         title: "Providence/Stoughton Line",
         elementId: "south-station-cr-providence",
+        StationName: "South Station",
         routeId: "CR-Providence",
         services: [
             service("CR-Providence", 0, "place-sstat", "Providence"),
@@ -121,12 +146,14 @@ const PANELS = [
     {
         title: "Kingston Line",
         elementId: "south-station-cr-kingston",
+        StationName: "South Station",
         routeId: "CR-Kingston",
         services: [service("CR-Kingston", 0, "place-sstat", "Kingston")],
     },
     {
         title: "Needham Line",
         elementId: "south-station-cr-needham",
+        StationName: "South Station",
         routeId: "CR-Needham",
         services: [service("CR-Needham", 0, "place-sstat", "Needham")],
     },
@@ -135,6 +162,7 @@ const PANELS = [
     {
         title: "Charlestown Ferry",
         elementId: "long-wharf-south-boat-f4",
+        StationName: "Long Wharf",
         routeId: "Boat-F4",
         services: [service("Boat-F4", 0, "Boat-Long-South", "Charlestown")],
     },
@@ -143,6 +171,7 @@ const PANELS = [
     {
         title: "Hingham/Hull Ferry",
         elementId: "boat-rowes-boat-f1",
+        StationName: "Rowes Wharf",
         routeId: "Boat-F1",
         services: [
             service("Boat-F1", 0, "Boat-Rowes", "Hingham"),
@@ -154,6 +183,7 @@ const PANELS = [
     {
         title: "East Boston Ferry",
         elementId: "boat-long-boat-eastboston",
+        StationName: "Long Wharf",
         routeId: "Boat-EastBoston",
         services: [service("Boat-EastBoston", 0, "Boat-Long", "Lewis Mall")],
     },
@@ -162,6 +192,7 @@ const PANELS = [
     {
         title: "Lynn Ferry",
         elementId: "boat-long-boat-lynn",
+        StationName: "Long Wharf",
         routeId: "Boat-Lynn",
         services: [service("Boat-Lynn", 0, "Boat-Long", "Blossom Street")],
     },
@@ -170,6 +201,7 @@ const PANELS = [
     {
         title: "Winthrop Ferry",
         elementId: "boat-aquarium-boat-f6",
+        StationName: "Aquarium",
         routeId: "Boat-F6",
         services: [service("Boat-F6", 0, "Boat-Aquarium", "Winthrop")],
     },
@@ -178,6 +210,7 @@ const PANELS = [
     {
         title: "Quincy Ferry",
         elementId: "boat-aquarium-boat-f7",
+        StationName: "Aquarium",
         routeId: "Boat-F7",
         services: [service("Boat-F7", 0, "Boat-Aquarium", "Quincy")],
     },
@@ -223,7 +256,8 @@ function formatTime(minutes) {
  * @returns String
  */
 function buildKey(panel, service) {
-    return `${panel.routeId}-${service.stopId}-${service.directionId}-${service.headsignContains}`;
+    const routeId = service.routeId ?? panel.routeId;
+    return `${routeId}-${service.stopId}-${service.directionId}-${service.headsignContains}`;
 }
 
 /**
@@ -309,7 +343,8 @@ async function fetchRealtime() {
             const key = buildKey(panel, service);
 
             let url;
-            url = `/api/mbta/schedules?filter[stop]=${service.stopId}&filter[route]=${panel.routeId}&include=prediction,trip`;
+            const routeId = service.routeId ?? panel.routeId;
+            url = `/api/mbta/schedules?filter[stop]=${service.stopId}&filter[route]=${routeId}&include=prediction,trip`;
             if (service.directionId !== undefined) {
                 url += `&filter[direction_id]=${service.directionId}`;
             }
@@ -442,11 +477,11 @@ function getRouteClass(routeId) {
     if (!routeId) return "";
 
     if (routeId.startsWith("CR-")) return "route-CR";
-    if (routeId.startsWith("Boat")) return "route-Boat";
+    if (routeId.startsWith("Boat-")) return "route-Boat";
     if (routeId === "Red") return "route-Red";
     if (routeId === "Orange") return "route-Orange";
     if (routeId === "Blue") return "route-Blue";
-    if (routeId === "Green") return "route-Green";
+    if (routeId.startsWith("Green")) return "route-Green";
 
     return "";
 }
@@ -456,7 +491,7 @@ function getRouteClass(routeId) {
  * @param {*} panel - a train line
  * @returns
  */
-function renderSubwayPanel(panel) {
+function renderPanel(panel) {
     const container = document.getElementById(panel.elementId);
     if (!container) return;
 
@@ -464,10 +499,13 @@ function renderSubwayPanel(panel) {
     if (!predContainer) return;
     const routeClass = getRouteClass(panel.routeId);
 
+    const headerCopy = `<span class="ticker-title">${panel.title}</span> - <span class="ticker-station">${panel.StationName}</span>`;
     let html = `
         <div class="mbta-card ${routeClass}">
             <div class="mbta-card-header">
-                ${panel.title} 
+                <div class="ticker-container">
+                    <span class="ticker-text">${headerCopy}</span>
+                </div>
             </div>
             <div class="mbta-card-body">
         `;
@@ -552,96 +590,62 @@ function renderSubwayPanel(panel) {
     if (!predContainer.innerHTML.trim()) {
         predContainer.innerHTML = '<div class="no-trains">No trains</div>';
     }
+
+    setTimeout(() => {
+        const tickerContainer = predContainer.querySelector('.ticker-container');
+        const tickerSpan = predContainer.querySelector('.ticker-text');
+        if (!tickerContainer || !tickerSpan) return;
+
+        if (tickerSpan.scrollWidth > tickerContainer.offsetWidth) {
+            tickerSpan.innerHTML = `${headerCopy}<span style="display:inline-block;width:36px"></span>${headerCopy}<span style="display:inline-block;width:36px"></span>`;
+            tickerSpan.classList.add('ticker-active');
+        }
+    }, 300);
 }
 
-// /**
-//  * Render commuter rails in PANELS
-//  * @param {*} panel - a train line
-//  * @returns
-//  */
-// function renderCRPanel(panels) {
-//     const container = document.getElementById("south-station-cr");
-//     if (!container) return;
-
-//     const predContainer = container.querySelector(".predictions");
-//     if (!predContainer) return;
-
-//     let html = `
-//         <div class="mbta-card route-CR">
-//             <div class="mbta-card-header">
-//                 South Station Commuter Rail
-//             </div>
-
-//             <div class="cr-grid">
-//                 <div class="cr-header">Line</div>
-//                 <div class="cr-header">Destination</div>
-//                 <div class="cr-header">Time</div>
-//                 <div class="cr-header">Alert</div>
-//         `;
-
-//     panels.forEach((panel) => {
-//         panel.services.forEach((service) => {
-//             const key = buildKey(panel, service);
-//             let preds = getPredictions(realtimeData[key]);
-
-//             preds = preds.filter((p) =>
-//                 p.headsign.includes(service.headsignContains),
-//             );
-//             if (!preds.length) return;
-
-//             const headsign = preds[0].headsign;
-//             const [destination, via] = headsign.split(" via ");
-
-//             // renders predicted time horizontally
-//             const times = preds
-//                 .slice(0, 3)
-//                 .map((p) => {
-//                     return `
-//                         <div class="pred-time ${p.isRealtime ? "realtime" : "scheduled"}">
-//                             <div>${p.isRealtime ? LIVE_ICON : SCHEDULE_ICON} ${formatTime(p.minutes)}</div>
-//                             <div>${p.formattedTime}</div>
-//                         </div>
-//                     `;
-//                 })
-//                 .join("");
-
-//             const p = preds[0];
-//             // puts alerts bottom of panel
-//             const alert = getAlertForRoute(panel.routeId);
-//             html += `<div class="cr-line">${panel.title}</div>
-//                         <div class="cr-destination">${p.headsign}</div>
-
-//                         <div class="pred-times">
-//                             ${times}
-//                     </div>
-
-//                         <div class="cr-alert">
-//                             ${alert ? "⚠️" : ""}
-//                         </div>
-//                     `;
-//         });
-//     });
-//     html += `</div></div>`;
-//     predContainer.innerHTML = html;
-
-//     if (!predContainer.innerHTML.trim()) {
-//         predContainer.innerHTML = '<div class="no-trains">No trains</div>';
-//     }
-// }
+/**
+ * Maps NWS shortForecast string to a weather emoji.
+ */
+function forecastToEmoji(forecast, isDaytime) {
+    const f = forecast.toLowerCase();
+    if (f.includes('blizzard')) return '🌨️❄️💨';
+    if (f.includes('thunderstorm') || f.includes('lightning')) {
+        return f.includes('rain') || f.includes('shower') ? '⛈️⚡🌧️' : '⛈️⚡';
+    }
+    if (f.includes('freezing rain') || f.includes('sleet') || f.includes('ice pellet')) return '🌨️💧';
+    if (f.includes('heavy snow')) return '❄️🌨️❄️';
+    if (f.includes('snow') || f.includes('flurr')) return '❄️🌨️';
+    if (f.includes('heavy rain')) return '🌧️💧💧';
+    if (f.includes('rain') && (f.includes('wind') || f.includes('bree'))) return '🌧️💨';
+    if (f.includes('shower') && f.includes('sun')) return '🌦️☀️';
+    if (f.includes('rain') || f.includes('shower')) return '🌧️💧';
+    if (f.includes('drizzle')) return '🌦️💧';
+    if (f.includes('dense fog')) return '🌫️🌫️';
+    if (f.includes('fog') || f.includes('haze') || f.includes('mist') || f.includes('smoke')) return '🌫️';
+    if (f.includes('mostly sunny') && (f.includes('wind') || f.includes('bree'))) return '🌤️💨';
+    if (f.includes('mostly sunny') || f.includes('partly sunny')) return '🌤️';
+    if (f.includes('partly cloudy')) return isDaytime ? '⛅' : '🌙⛅';
+    if (f.includes('mostly cloudy')) return '🌥️☁️';
+    if (f.includes('cloudy') || f.includes('overcast')) return '☁️☁️';
+    if (f.includes('sunny') || f.includes('clear')) {
+        if (f.includes('wind') || f.includes('bree')) return isDaytime ? '☀️💨' : '🌙💨';
+        return isDaytime ? '☀️' : '🌙✨';
+    }
+    if (f.includes('wind') || f.includes('bree')) return '💨💨';
+    return isDaytime ? '🌡️' : '🌙';
+}
 
 /**
- * Renders the weather short and long description, inclcude an icon, temp F, Location, and Date
+ * Renders weather as an MBTA-style card with date/time in the header.
  */
 function renderWeather() {
     const container = document.getElementById("weather-box");
-    if (!container || !cacheWeather?.length || !detailedWeather?.length) return;
+    if (!container || !cacheWeather?.length) return;
 
     const current = cacheWeather[0];
-    const currentDetailed = detailedWeather[0];
-
     const tempF = Math.round(current.temperature);
     const description = current.shortForecast;
-    const detailedDesc = currentDetailed.detailedForecast;
+    const emoji = forecastToEmoji(description, current.isDaytime);
 
     const date = new Date().toLocaleDateString(undefined, {
         weekday: "long",
@@ -651,36 +655,27 @@ function renderWeather() {
 
     if (!container.querySelector(".weather-card")) {
         container.innerHTML = `
-        <div class="weather-card">
-
-            <div class="weather-left">
-                <div class="weather-main">
-                    <div class="weather-temp">${tempF}°</div>
-                    <img class="weather-icon" src="${current.icon}" alt="${description}">
+        <div class="mbta-card weather-card">
+            <div class="mbta-card-body weather-card-body">
+                <span class="weather-temp">${tempF}°</span>
+                <span class="weather-emoji">${emoji}</span>
+                <div class="weather-spacer"></div>
+                <div class="weather-right-group">
+                    <div class="weather-meta">
+                        <span class="weather-date">${date}</span>
+                        <span class="weather-location">Boston, MA</span>
+                    </div>
+                    <div id="timestamp"></div>
                 </div>
-
-                <div class="weather-desc">${description}</div>
-                <div class="weather-detail">${detailedDesc}</div>
             </div>
-
-            <div class="weather-right">
-                <div class="weather-location">Boston, MA</div>
-                <div class="weather-date">${date}</div>
-                <div id="timestamp" class="timestamp"></div>
-            </div>
-
         </div>
-    `;
+        `;
+    } else {
+        const card = container.querySelector(".weather-card");
+        card.querySelector(".weather-temp").textContent = `${tempF}°`;
+        card.querySelector(".weather-emoji").textContent = emoji;
+        card.querySelector(".weather-date").textContent = date;
     }
-    const card = container.querySelector(".weather-card");
-
-    // update everything every 20mins EXCEPT timestamp
-    card.querySelector(".weather-temp").textContent = `${tempF}`;
-    card.querySelector(".weather-icon").src = current.icon;
-    card.querySelector(".weather-icon").alt = description;
-    card.querySelector(".weather-desc").textContent = description;
-    card.querySelector(".weather-detail").textContent = detailedDesc;
-    card.querySelector(".weather-date").textContent = date;
 }
 
 // ===================== UPDATE LOOP =====================
@@ -701,36 +696,41 @@ function startClock() {
     setInterval(updateClock, 1000);
 }
 
-/**
+/** 
  * Update calls and render.
- */
+*/
 async function updateAll() {
     await fetchRealtime();
     await fetchAlerts();
     await fetchHourlyForecast();
     await fetchDetailedForecast();
 
+    PANELS.forEach(renderPanel);
     renderWeather();
+}
 
-    PANELS.forEach((panel) => {
-        //if (panel.routeId.startsWith("CR-")) renderCRPanel(panel);
-        //else
-        renderSubwayPanel(panel);
-    });
+/**
+ * Alternates visibility between container-top and container-bottom every 20 seconds.
+ */
+function startContainerRotation() {
+    const top = document.querySelector(".container-top");
+    const bottom = document.querySelector(".container-bottom");
+    if (!top || !bottom) return;
 
-    // const subwayPanels = PANELS.filter((p) => !p.routeId.startsWith("CR-"));
-    // const crPanels = PANELS.filter((p) => p.routeId.startsWith("CR-"));
-    // renderCRPanel(crPanels);
-    // subwayPanels.forEach((panel) => {
-    //     //if (panel.routeId.startsWith("CR-")) renderCRPanel(panel);
-    //     //else
-    //     renderSubwayPanel(panel);
-    // });
+    let showingTop = true;
+    bottom.style.display = "none";
+
+    setInterval(() => {
+        showingTop = !showingTop;
+        top.style.display = showingTop ? "grid" : "none";
+        bottom.style.display = showingTop ? "none" : "grid";
+    }, 15000);
 }
 
 // ===================== START =====================
 console.log("Starting scalable MBTA tracker");
 startClock();
+startContainerRotation();
 updateAll();
 // update every 15 seconds (weather updates independently every 20 & 60 minutes)
 setInterval(updateAll, 15000);
