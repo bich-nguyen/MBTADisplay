@@ -55,7 +55,7 @@ const PANELS = [
     {
         title: "Orange Line",
         elementId: "state-station-orange",
-        StationName: "South Station",
+        StationName: "State Station",
         routeId: "Orange",
         services: [
             service("Orange", 0, "place-state", "Forest Hills", "Orange-A-0"),
@@ -67,7 +67,7 @@ const PANELS = [
     {
         title: "Blue Line",
         elementId: "state-station-blue",
-        StationName: "South Station",
+        StationName: "State Station",
         routeId: "Blue",
         services: [
             service("Blue", 0, "place-state", "Bowdoin", "Blue-6-0"),
@@ -650,7 +650,6 @@ function renderPanel(panel) {
     if (!predContainer.innerHTML.trim()) {
         predContainer.innerHTML = '<div class="no-trains">No trains</div>';
     }
-
 }
 
 /**
