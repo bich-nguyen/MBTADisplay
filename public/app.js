@@ -9,13 +9,12 @@
  */
 function service(routeId, directionId, stopId, destination) {
     const isBlueOrGreen = routeId === "Green" || routeId === "Blue" || routeId.startsWith("Green-");
+    const isCommuter = routeId.startsWith("CR-");
     const direction = isBlueOrGreen
-        ? directionId === 0
-            ? "Westbound"
-            : "Eastbound"
-        : directionId === 0
-          ? "Southbound"
-          : "Northbound";
+        ? directionId === 0 ? "Westbound" : "Eastbound"
+        : isCommuter
+        ? directionId === 0 ? "Outbound" : "Inbound"
+        : directionId === 0 ? "Southbound" : "Northbound";
 
     return {
         routeId,
@@ -222,8 +221,8 @@ const PANELS = [
         StationName: "North Station",
         routeId: "CR-Fitchburg",
         services: [
-            service("CR-Fitchburg", 0, "place-north-station", "Fitchburg"),
-            service("CR-Fitchburg", 0, "place-north-station", "Wachusett"),
+            service("CR-Fitchburg", 0, "place-north", "Fitchburg"),
+            service("CR-Fitchburg", 0, "place-north", "Wachusett"),
         ],
     },
 
@@ -233,7 +232,7 @@ const PANELS = [
         StationName: "North Station",
         routeId: "CR-Lowell",
         services: [
-            service("CR-Lowell", 0, "place-north-station", "Lowell"),
+            service("CR-Lowell", 0, "place-north", "Lowell"),
         ],
     },
 
@@ -243,8 +242,8 @@ const PANELS = [
         StationName: "North Station",
         routeId: "CR-Haverhill",
         services: [
-            service("CR-Haverhill", 0, "place-north-station", "Haverhill"),
-            service("CR-Haverhill", 0, "place-north-station", "Bradford"),
+            service("CR-Haverhill", 0, "place-north", "Haverhill"),
+            service("CR-Haverhill", 0, "place-north", "Bradford"),
         ],
     },
 
@@ -254,9 +253,9 @@ const PANELS = [
         StationName: "North Station",
         routeId: "CR-Newburyport",
         services: [
-            service("CR-Newburyport", 0, "place-north-station", "Newburyport"),
-            service("CR-Newburyport", 0, "place-north-station", "Rockport"),
-            service("CR-Newburyport", 0, "place-north-station", "Gloucester"),
+            service("CR-Newburyport", 0, "place-north", "Newburyport"),
+            service("CR-Newburyport", 0, "place-north", "Rockport"),
+            service("CR-Newburyport", 0, "place-north", "Gloucester"),
         ],
     },
 ];
