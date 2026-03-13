@@ -93,14 +93,14 @@ const PANELS = [
 
     // South Station – Commuter Rail
     {
-        title: "Greenbush Line",
+        title: "Greenbush",
         elementId: "south-station-cr-greenbush",
         StationName: "South Station",
         routeId: "CR-Greenbush",
         services: [service("CR-Greenbush", 0, "place-sstat", "Greenbush")],
     },
     {
-        title: "Fairmount Line",
+        title: "Fairmount",
         elementId: "south-station-cr-fairmount",
         StationName: "South Station",
         routeId: "CR-Fairmount",
@@ -110,7 +110,7 @@ const PANELS = [
         ],
     },
     {
-        title: "Fall River/New Bedford Line",
+        title: "Fall River/New Bedford",
         elementId: "south-station-cr-newbedford",
         StationName: "South Station",
         routeId: "CR-NewBedford",
@@ -120,7 +120,7 @@ const PANELS = [
         ],
     },
     {
-        title: "Framingham/Worcester Line",
+        title: "Framingham/Worcester",
         elementId: "south-station-cr-worcester",
         StationName: "South Station",
         routeId: "CR-Worcester",
@@ -130,7 +130,7 @@ const PANELS = [
         ],
     },
     {
-        title: "Franklin/Foxboro Line",
+        title: "Franklin/Foxboro",
         elementId: "south-station-cr-franklin",
         StationName: "South Station",
         routeId: "CR-Franklin",
@@ -141,7 +141,7 @@ const PANELS = [
         ],
     },
     {
-        title: "Providence/Stoughton Line",
+        title: "Providence/Stoughton",
         elementId: "south-station-cr-providence",
         StationName: "South Station",
         routeId: "CR-Providence",
@@ -152,14 +152,14 @@ const PANELS = [
         ],
     },
     {
-        title: "Kingston Line",
+        title: "Kingston",
         elementId: "south-station-cr-kingston",
         StationName: "South Station",
         routeId: "CR-Kingston",
         services: [service("CR-Kingston", 0, "place-sstat", "Kingston")],
     },
     {
-        title: "Needham Line",
+        title: "Needham",
         elementId: "south-station-cr-needham",
         StationName: "South Station",
         routeId: "CR-Needham",
@@ -225,7 +225,7 @@ const PANELS = [
 
     // North Station
     {
-        title: "Fitchburg Line",
+        title: "Fitchburg",
         elementId: "north-station-cr-fitchburg",
         StationName: "North Station",
         routeId: "CR-Fitchburg",
@@ -236,7 +236,7 @@ const PANELS = [
     },
 
     {
-        title: "Lowell Line",
+        title: "Lowell",
         elementId: "north-station-cr-lowell",
         StationName: "North Station",
         routeId: "CR-Lowell",
@@ -244,7 +244,7 @@ const PANELS = [
     },
 
     {
-        title: "Haverhill Line",
+        title: "Haverhill",
         elementId: "north-station-cr-haverhill",
         StationName: "North Station",
         routeId: "CR-Haverhill",
@@ -255,7 +255,7 @@ const PANELS = [
     },
 
     {
-        title: "Newburyport/Rockport Line",
+        title: "Newburyport/Rockport",
         elementId: "north-station-cr-newburyport",
         StationName: "North Station",
         routeId: "CR-Newburyport",
@@ -310,9 +310,7 @@ const SCHEDULE_ICON = '<i class="bi bi-calendar-date"></i>';
 function formatTime(minutes) {
     if (minutes <= 1) return "Now";
 
-    const h = Math.floor(minutes / 60);
-    const m = Math.floor(minutes % 60);
-    return h ? `${h}h ${m}m` : `${m}m`;
+    return `${Math.floor(minutes)}m`;
 }
 
 /**
@@ -477,9 +475,9 @@ function getPredictions(data) {
 
         // predicted time train arrives
         const formattedTime = date.toLocaleTimeString([], {
-            hour: "2-digit",
+            hour: "numeric",
             minute: "2-digit",
-            hour12: false,
+            hour12: true,
         });
 
         results.push({
@@ -565,13 +563,10 @@ function renderPanel(panel) {
     if (!predContainer) return;
     const routeClass = getRouteClass(panel.routeId);
 
-    const headerCopy = `<span class="ticker-title">${panel.title}</span> - <span class="ticker-station">${panel.StationName}</span>`;
     let html = `
         <div class="mbta-card ${routeClass}">
             <div class="mbta-card-header">
-                <div class="ticker-container">
-                    <span class="ticker-text">${headerCopy}</span>
-                </div>
+                <span class="ticker-title">${panel.title}</span> <span class="ticker-station"> ${panel.StationName}</span>
             </div>
             <div class="mbta-card-body">
         `;
@@ -617,7 +612,6 @@ function renderPanel(panel) {
                     return `
                         <div class="pred-time ${p.isRealtime ? "realtime" : "scheduled"}">
                             <div>${p.isRealtime ? LIVE_ICON : SCHEDULE_ICON} ${formatTime(p.minutes)}</div>
-                            <div>${p.formattedTime}</div>
                         </div>
                     `;
                 })
@@ -657,17 +651,6 @@ function renderPanel(panel) {
         predContainer.innerHTML = '<div class="no-trains">No trains</div>';
     }
 
-    setTimeout(() => {
-        const tickerContainer =
-            predContainer.querySelector(".ticker-container");
-        const tickerSpan = predContainer.querySelector(".ticker-text");
-        if (!tickerContainer || !tickerSpan) return;
-
-        if (tickerSpan.scrollWidth > tickerContainer.offsetWidth) {
-            tickerSpan.innerHTML = `${headerCopy}<span style="display:inline-block;width:36px"></span>${headerCopy}<span style="display:inline-block;width:36px"></span>`;
-            tickerSpan.classList.add("ticker-active");
-        }
-    }, 300);
 }
 
 /**
@@ -685,7 +668,7 @@ function renderCRPanel(panels, stationName, stationClass) {
     let html = `
         <div class="mbta-card route-CR">
             <div class="mbta-card-header">
-                ${stationName} Commuter Rail
+                Commuter Rail - <span class="ticker-station">${stationName}</span>
             </div>
 
             <div class="cr-grid">
@@ -712,7 +695,7 @@ function renderCRPanel(panels, stationName, stationClass) {
                 .map((p) => {
                     return `
                         <div class="pred-time ${p.isRealtime ? "realtime" : "scheduled"}">
-                            <div>${p.isRealtime ? LIVE_ICON : SCHEDULE_ICON} ${formatTime(p.minutes)} - ${p.formattedTime}</div>
+                            <div>${p.isRealtime ? LIVE_ICON : SCHEDULE_ICON} ${p.formattedTime}</div>
                         </div>
                     `;
                 })
@@ -730,9 +713,7 @@ function renderCRPanel(panels, stationName, stationClass) {
                             ${times}
                         </div>
 
-                        <div class="cr-alert">
-                            ${alert ? `⚠️ ${alert.attributes.header}` : ""}
-                        </div>
+                        ${alert ? `<div class="cr-alert"><div class="cr-alert-ticker"><span class="cr-alert-text">⚠️ ${alert.attributes.header}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⚠️ ${alert.attributes.header}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div></div>` : `<div class="cr-alert"></div>`}
                     `;
         });
     });
@@ -898,7 +879,8 @@ function startContainerRotation() {
         containers[current].style.display = "none";
         current = (current + 1) % containers.length;
         containers[current].style.display = "grid";
-    }, 15000);
+        updateAll();
+    }, 25000);
 }
 
 // ===================== START =====================
@@ -906,5 +888,3 @@ console.log("Starting scalable MBTA tracker");
 startClock();
 startContainerRotation();
 updateAll();
-// update every 15 seconds (weather updates independently every 20 & 60 minutes)
-setInterval(updateAll, 15000);

@@ -110,7 +110,7 @@ body {
 
 .cr-grid {
     display: grid;
-    grid-template-columns: 1fr 2fr 3fr 2fr;
+    grid-template-columns: auto auto auto 1fr;
     background: #f2f3f5;
     border-radius: 6px;
 }
@@ -135,13 +135,14 @@ body {
     justify-content: space-between;
     align-items: center;
     font-weight: 600;
+    font-size: 20px;
 }
 
 .cr-times {
     display: flex;
-    gap: 40px;
+    gap: 80px;
     font-weight: 700;
-    font-size: 12px;
+    font-size: 20px;
     align-items: center;
 }
 
@@ -151,15 +152,48 @@ body {
 }
 
 .cr-line,
-.cr-times,
+.cr-times {
+    border-top: 1px solid #d7d8da;
+    padding: 3px 40px;
+}
+
 .cr-alert {
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+    align-self: stretch;
+}
+
+.cr-alert:has(.cr-alert-ticker) {
     border-top: 1px solid #d7d8da;
     padding: 3px 20px;
 }
 
-.cr-alert {
-    text-align: left;
-    align-self: center;
+.cr-grid:not(:has(.cr-alert-ticker)) .cr-header:last-child {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+@keyframes cr-alert-ticker {
+    from { transform: translateX(0%); }
+    to   { transform: translateX(-50%); }
+}
+
+.cr-alert-ticker {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    right: 0;
+    transform: translateY(-50%);
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.cr-alert-text {
+    display: inline-block;
+    font-size: 20px;
+    animation: cr-alert-ticker 25s linear infinite;
 }
 
 .predictions {
@@ -194,34 +228,9 @@ body {
     flex-shrink: 0;
 }
 
-.ticker-container {
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.ticker-text {
-    display: inline-block;
-}
-
-.ticker-spacer {
-    display: inline-block;
-}
-
 .mbta-card-header .ticker-station {
     font-weight: 200;
-}
-
-@keyframes ticker {
-    from {
-        transform: translateX(0%);
-    }
-    to {
-        transform: translateX(-50%);
-    }
-}
-
-.ticker-active {
-    animation: ticker 70s linear infinite;
+    font-size: 20px;
 }
 
 /* BODY */
@@ -265,7 +274,7 @@ body {
     background: #fff7bf;
     border-left: 4px solid #ffdd00;
     font-family: var(--font-family-mono);
-    font-size: 12px;
+    font-size: 20px;
     flex-shrink: 0;
 }
 
@@ -312,7 +321,7 @@ body {
 }
 
 .pred-time {
-    font-size: 16px;
+    font-size: 20px;
     min-width: 70px;
     text-align: right;
 }
@@ -400,4 +409,12 @@ body {
     .container-ferry {
         grid-template-columns: calc(50% - 0.625rem) calc(50% - 0.625rem);
     }
+
+    .cr-grid {
+    grid-template-columns: 1fr 1fr 3fr 3fr;
+    }
+
+    .cr-times {
+    gap: 40px;
+}
 }
