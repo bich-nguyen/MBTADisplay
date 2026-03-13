@@ -712,7 +712,7 @@ function renderCRPanel(panels, stationName, stationClass) {
                 .map((p) => {
                     return `
                         <div class="pred-time ${p.isRealtime ? "realtime" : "scheduled"}">
-                            <div>${p.isRealtime ? LIVE_ICON : SCHEDULE_ICON} ${p.formattedTime}</div>
+                            <div>${p.isRealtime ? LIVE_ICON : SCHEDULE_ICON} ${formatTime(p.minutes)} - ${p.formattedTime}</div>
                         </div>
                     `;
                 })
@@ -722,7 +722,7 @@ function renderCRPanel(panels, stationName, stationClass) {
             // puts alerts bottom of panel
             const alert = getAlertForRoute(panel.routeId);
             html += `
-            
+
                     <div class="cr-line">${panel.title}</div>
                         <div class="cr-line">${p.headsign}</div>
 
@@ -731,7 +731,7 @@ function renderCRPanel(panels, stationName, stationClass) {
                         </div>
 
                         <div class="cr-alert">
-                            ${alert ? "⚠️" : ""}
+                            ${alert ? `⚠️ ${alert.attributes.header}` : ""}
                         </div>
                     `;
         });
