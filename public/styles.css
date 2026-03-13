@@ -419,6 +419,20 @@ body {
     }
 
     .cr-times {
-        gap: 40px;
+        gap: 12px;
+        font-weight: 700;
+    }
+    .cr-times .pred-time {
+        font-size: 17px;
+        text-align: left;
+        padding: 22px 4px 22px;
+    }
+    .cr-header,
+    .cr-line,
+    .cr-times {
+        padding: 3px 20px;
+    }
+    .cr-icon{
+        display: none;
     }
 }

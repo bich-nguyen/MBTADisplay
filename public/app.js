@@ -566,7 +566,8 @@ function renderPanel(panel) {
     let html = `
         <div class="mbta-card ${routeClass}">
             <div class="mbta-card-header">
-                <span class="ticker-title">${panel.title}</span> <span class="ticker-station"> ${panel.StationName}</span>
+                <span class="ticker-title">${panel.title}</span> 
+                <span class="ticker-station"> ${panel.StationName}</span>
             </div>
             <div class="mbta-card-body">
         `;
@@ -694,7 +695,8 @@ function renderCRPanel(panels, stationName, stationClass) {
                 .map((p) => {
                     return `
                         <div class="pred-time ${p.isRealtime ? "realtime" : "scheduled"}">
-                            <div>${p.isRealtime ? LIVE_ICON : SCHEDULE_ICON} ${p.formattedTime}</div>
+                            <span class="cr-icon">${p.isRealtime ? LIVE_ICON : SCHEDULE_ICON}</span>
+                            <span> ${p.formattedTime}</span>
                         </div>
                     `;
                 })
