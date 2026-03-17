@@ -148,7 +148,7 @@ body {
 
 .cr-times .pred-time {
     text-align: left;
-    min-width: auto;
+    min-width: 120px;
 }
 
 .cr-line,
@@ -162,6 +162,7 @@ body {
     overflow: hidden;
     position: relative;
     align-self: stretch;
+    border-top: 1px solid #d7d8da;
 }
 
 .cr-alert:has(.cr-alert-ticker) {
@@ -222,19 +223,30 @@ body {
 /* HEADER */
 .mbta-card-header {
     color: white;
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 700;
-    padding: 14px 20px;
     text-transform: uppercase;
     border-radius: 3px 3px 0 0;
     overflow: hidden;
     height: 66px;
     flex-shrink: 0;
+    display: flex;
+    text-align: center;
 }
 
-.mbta-card-header .ticker-station {
+.station-line {
+    padding: 15px 15px;
+}
+
+.station-name {
     font-weight: 200;
     font-size: 20px;
+    padding: 23px 0px;
+}
+
+.walk-min {
+    padding: 15px 10px;
+    margin-left: auto;
 }
 
 /* BODY */
@@ -326,8 +338,8 @@ body {
 
 .pred-time {
     font-size: 20px;
-    min-width: 70px;
-    text-align: right;
+    min-width: 80px;
+    text-align: left;
 }
 
 .pred-time.realtime {
@@ -425,14 +437,25 @@ body {
     .cr-times .pred-time {
         font-size: 17px;
         text-align: left;
-        padding: 22px 4px 22px;
+        padding: 22px 0px 22px;
+        min-width: 90px;
     }
     .cr-header,
     .cr-line,
     .cr-times {
         padding: 3px 20px;
     }
-    .cr-icon{
+    .cr-icon {
+        display: none;
+    }
+
+    .mbta-card-header {
+        font-size: 25px;
+    }
+    .station-name {
+        padding: 20px 0px;
+    }
+    .icon {
         display: none;
     }
 }

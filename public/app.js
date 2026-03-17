@@ -43,6 +43,7 @@ const PANELS = [
         title: "Red Line",
         elementId: "south-station-red",
         StationName: "South Station",
+        walkMin: 7,
         routeId: "Red",
         services: [
             service("Red", 0, "place-sstat", "Ashmont", "Red-1-0"),
@@ -56,6 +57,7 @@ const PANELS = [
         title: "Orange Line",
         elementId: "state-station-orange",
         StationName: "State Station",
+        walkMin: 9,
         routeId: "Orange",
         services: [
             service("Orange", 0, "place-state", "Forest Hills", "Orange-A-0"),
@@ -68,6 +70,7 @@ const PANELS = [
         title: "Blue Line",
         elementId: "state-station-blue",
         StationName: "State Station",
+        walkMin: 9,
         routeId: "Blue",
         services: [
             service("Blue", 0, "place-state", "Bowdoin", "Blue-6-0"),
@@ -80,6 +83,7 @@ const PANELS = [
         title: "Green Line",
         elementId: "park-street-green",
         StationName: "Park Street",
+        walkMin: 16,
         routeId: "Green",
         services: [
             service("Green-B", 0, "place-pktrm", "Boston College"),
@@ -96,6 +100,7 @@ const PANELS = [
         title: "Greenbush",
         elementId: "south-station-cr-greenbush",
         StationName: "South Station",
+        walkMin: 7,
         routeId: "CR-Greenbush",
         services: [service("CR-Greenbush", 0, "place-sstat", "Greenbush")],
     },
@@ -103,6 +108,7 @@ const PANELS = [
         title: "Fairmount",
         elementId: "south-station-cr-fairmount",
         StationName: "South Station",
+        walkMin: 7,
         routeId: "CR-Fairmount",
         services: [
             service("CR-Fairmount", 0, "place-sstat", "Readville"),
@@ -113,6 +119,7 @@ const PANELS = [
         title: "Fall River/New Bedford",
         elementId: "south-station-cr-newbedford",
         StationName: "South Station",
+        walkMin: 7,
         routeId: "CR-NewBedford",
         services: [
             service("CR-NewBedford", 0, "place-sstat", "New Bedford"),
@@ -123,6 +130,7 @@ const PANELS = [
         title: "Framingham/Worcester",
         elementId: "south-station-cr-worcester",
         StationName: "South Station",
+        walkMin: 7,
         routeId: "CR-Worcester",
         services: [
             service("CR-Worcester", 0, "place-sstat", "Worcester"),
@@ -133,6 +141,7 @@ const PANELS = [
         title: "Franklin/Foxboro",
         elementId: "south-station-cr-franklin",
         StationName: "South Station",
+        walkMin: 7,
         routeId: "CR-Franklin",
         services: [
             service("CR-Franklin", 0, "place-sstat", "Foxboro"),
@@ -144,6 +153,7 @@ const PANELS = [
         title: "Providence/Stoughton",
         elementId: "south-station-cr-providence",
         StationName: "South Station",
+        walkMin: 7,
         routeId: "CR-Providence",
         services: [
             service("CR-Providence", 0, "place-sstat", "Providence"),
@@ -155,6 +165,7 @@ const PANELS = [
         title: "Kingston",
         elementId: "south-station-cr-kingston",
         StationName: "South Station",
+        walkMin: 7,
         routeId: "CR-Kingston",
         services: [service("CR-Kingston", 0, "place-sstat", "Kingston")],
     },
@@ -162,24 +173,27 @@ const PANELS = [
         title: "Needham",
         elementId: "south-station-cr-needham",
         StationName: "South Station",
+        walkMin: 7,
         routeId: "CR-Needham",
         services: [service("CR-Needham", 0, "place-sstat", "Needham")],
     },
 
     // Long Wharf South -> Charlestown
     {
-        title: "Charlestown Ferry",
+        title: "Charlestown",
         elementId: "long-wharf-south-boat-f4",
         StationName: "Long Wharf",
+        walkMin: 10,
         routeId: "Boat-F4",
         services: [service("Boat-F4", 0, "Boat-Long-South", "Charlestown")],
     },
 
     // Rowes Wharf -> Hingham
     {
-        title: "Hingham/Hull Ferry",
+        title: "Hingham/Hull",
         elementId: "boat-rowes-boat-f1",
         StationName: "Rowes Wharf",
+        walkMin: 5,
         routeId: "Boat-F1",
         services: [
             service("Boat-F1", 0, "Boat-Rowes", "Hingham"),
@@ -192,6 +206,7 @@ const PANELS = [
         title: "East Boston Ferry",
         elementId: "boat-long-boat-eastboston",
         StationName: "Long Wharf",
+        walkMin: 12,
         routeId: "Boat-EastBoston",
         services: [service("Boat-EastBoston", 0, "Boat-Long", "Lewis Mall")],
     },
@@ -201,6 +216,7 @@ const PANELS = [
         title: "Lynn Ferry",
         elementId: "boat-long-boat-lynn",
         StationName: "Long Wharf",
+        walkMin: 12,
         routeId: "Boat-Lynn",
         services: [service("Boat-Lynn", 0, "Boat-Long", "Blossom Street")],
     },
@@ -210,6 +226,7 @@ const PANELS = [
         title: "Winthrop Ferry",
         elementId: "boat-aquarium-boat-f6",
         StationName: "Aquarium",
+        walkMin: 8,
         routeId: "Boat-F6",
         services: [service("Boat-F6", 0, "Boat-Aquarium", "Winthrop")],
     },
@@ -219,6 +236,7 @@ const PANELS = [
         title: "Quincy Ferry",
         elementId: "boat-aquarium-boat-f7",
         StationName: "Aquarium",
+        walkMin: 8,
         routeId: "Boat-F7",
         services: [service("Boat-F7", 0, "Boat-Aquarium", "Quincy")],
     },
@@ -228,6 +246,7 @@ const PANELS = [
         title: "Fitchburg",
         elementId: "north-station-cr-fitchburg",
         StationName: "North Station",
+        walkMin: 21,
         routeId: "CR-Fitchburg",
         services: [
             service("CR-Fitchburg", 0, "place-north", "Fitchburg"),
@@ -239,6 +258,7 @@ const PANELS = [
         title: "Lowell",
         elementId: "north-station-cr-lowell",
         StationName: "North Station",
+        walkMin: 21,
         routeId: "CR-Lowell",
         services: [service("CR-Lowell", 0, "place-north", "Lowell")],
     },
@@ -247,6 +267,7 @@ const PANELS = [
         title: "Haverhill",
         elementId: "north-station-cr-haverhill",
         StationName: "North Station",
+        walkMin: 21,
         routeId: "CR-Haverhill",
         services: [
             service("CR-Haverhill", 0, "place-north", "Haverhill"),
@@ -258,6 +279,7 @@ const PANELS = [
         title: "Newburyport/Rockport",
         elementId: "north-station-cr-newburyport",
         StationName: "North Station",
+        walkMin: 21,
         routeId: "CR-Newburyport",
         services: [
             service("CR-Newburyport", 0, "place-north", "Newburyport"),
@@ -267,8 +289,7 @@ const PANELS = [
     },
 ];
 
-/** Relevant STOPS */
-const STOPID = [{ stopId: "place-sstat" }, { stopId: "place-state" }];
+/** GROUPING STOPS */
 const SOUTHSTATIONCR = [
     "CR-Greenbush",
     "CR-Fairmount",
@@ -292,14 +313,15 @@ let alertData = {};
 
 /** NWS Data */
 let cacheWeather = null;
-let detailedWeather = null;
-let lastWeatherFetch = 0;
 let lastHourlyFetch = 0;
 
 const LIVE_ICON =
     '<i class="bi bi-broadcast-pin" style="font-size:0.9em; margin-right:4px;"></i>';
 
 const SCHEDULE_ICON = '<i class="bi bi-calendar-date"></i>';
+const WALK_ICON = '<i class="bi bi-person-walking"></i>';
+const TRAIN_ICON = '<i class="bi bi-train-front"></i>';
+const WATER_ICON = '<i class="bi bi-water"></i>';
 
 // ===================== HELPERS =====================
 /**
@@ -466,7 +488,7 @@ function getPredictions(data) {
         const date = new Date(timeStr);
         // how long from now does train arrive
         const minutes = (date - now) / 60000;
-        if (minutes < -1 || minutes > 480) return; // allow preds within 3hr
+        if (minutes < -1 || minutes > 480) return; // allow preds within 8hr
         const headsign = tripsById[tripId]?.headsign;
         if (!headsign) return;
 
@@ -500,7 +522,7 @@ function getPredictions(data) {
 async function fetchHourlyForecast() {
     const now = Date.now();
     // fetch weather every 20 mins
-    if (cacheWeather && now - lastWeatherFetch < 20 * 60000) {
+    if (cacheWeather && now - lastHourlyFetch < 20 * 60000) {
         return cacheWeather;
     }
 
@@ -510,25 +532,6 @@ async function fetchHourlyForecast() {
     lastHourlyFetch = now;
 
     return cacheWeather;
-}
-
-/**
- * Calls NWS API for 12 hour forecast
- * @returns detailed description of weather
- */
-async function fetchDetailedForecast() {
-    const now = Date.now();
-    // fetch weather every hour
-    if (detailedWeather && now - lastHourlyFetch < 60 * 60000) {
-        return detailedWeather;
-    }
-
-    const url = "/api/weather/gridpoints/BOX/72,90/forecast";
-    const data = await fetchAPI(url);
-    detailedWeather = data?.properties?.periods ?? [];
-    lastDetailedFetch = now;
-
-    return detailedWeather;
 }
 
 // ===================== RENDER =====================
@@ -566,8 +569,14 @@ function renderPanel(panel) {
     let html = `
         <div class="mbta-card ${routeClass}">
             <div class="mbta-card-header">
-                <span class="ticker-title">${panel.title}</span> 
-                <span class="ticker-station"> ${panel.StationName}</span>
+                <span class="station-line">
+                <span class="icon">${panel.routeId.startsWith("Boat-") ? WATER_ICON : TRAIN_ICON}</span>
+                ${panel.title}</span> 
+                <span class="station-name"> ${panel.StationName}</span>
+                <span class="walk-min">
+                    ${WALK_ICON}
+                    ${panel.walkMin} min
+                </span>
             </div>
             <div class="mbta-card-body">
         `;
@@ -658,7 +667,7 @@ function renderPanel(panel) {
  * @param {*} panel - a train line
  * @returns
  */
-function renderCRPanel(panels, stationName, stationClass) {
+function renderCRPanel(panels, stationName, stationClass, walkMin) {
     const container = document.querySelector(`.${stationClass}`);
     if (!container) return;
 
@@ -668,7 +677,12 @@ function renderCRPanel(panels, stationName, stationClass) {
     let html = `
         <div class="mbta-card route-CR">
             <div class="mbta-card-header">
-                Commuter Rail - <span class="ticker-station">${stationName}</span>
+                <span class="station-line"> ${TRAIN_ICON} Commuter Rail</span>
+                <span class="station-name">${stationName}</span>
+                <span class="walk-min">
+                    ${WALK_ICON}
+                    ${walkMin} min
+                </span>
             </div>
 
             <div class="cr-grid">
@@ -843,7 +857,6 @@ async function updateAll() {
     await fetchRealtime();
     await fetchAlerts();
     await fetchHourlyForecast();
-    await fetchDetailedForecast();
 
     PANELS.forEach(renderPanel);
 
@@ -853,8 +866,8 @@ async function updateAll() {
     const northPanels = PANELS.filter((p) =>
         NORTHSTATIONCR.includes(p.routeId),
     );
-    renderCRPanel(southPanels, "South Station", "south-station-cr");
-    renderCRPanel(northPanels, "North Station", "north-station-cr");
+    renderCRPanel(southPanels, "South Station", "south-station-cr", 7);
+    renderCRPanel(northPanels, "North Station", "north-station-cr", 21);
 
     renderWeather();
 }
