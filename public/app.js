@@ -178,34 +178,52 @@ const PANELS = [
         services: [service("CR-Needham", 0, "place-sstat", "Needham")],
     },
 
+    // Rowes Wharf -> Hingham
+    {
+        title: "(F1) RW",
+        elementId: "boat-rowes-boat-f1",
+        StationName: "Rowes Wharf",
+        walkMin: 5,
+        routeId: "Boat-F1",
+        services: [service("Boat-F1", 0, "Boat-Rowes", "Hingham")],
+    },
+
+    {
+        title: "(F2H) LWN",
+        elementId: "boat-long-boat-f1",
+        StationName: "Long Wharf North",
+        walkMin: 5,
+        routeId: "Boat-F1",
+        services: [
+            service("Boat-F1", 0, "Boat-Long", "Hingham via Hull"),
+            service("Boat-F1", 0, "Boat-Long", "Hull"),
+            service(
+                "Boat-F1",
+                0,
+                "Boat-Long",
+                "Hingham via Logan Airport & Hull",
+            ),
+            service("Boat-F1", 0, "Boat-Long", "HingHam via Logan Airport"),
+            service("Boat-F1", 0, "Boat-Long", "Hingham"),
+            service("Boat-F1", 0, "Boat-Long", "Hull via Logan Airport"),
+        ],
+    },
+
     // Long Wharf South -> Charlestown
     {
-        title: "Charlestown",
+        title: "(F4) LWS",
         elementId: "long-wharf-south-boat-f4",
-        StationName: "Long Wharf",
+        StationName: "Long Wharf South",
         walkMin: 10,
         routeId: "Boat-F4",
         services: [service("Boat-F4", 0, "Boat-Long-South", "Charlestown")],
     },
 
-    // Rowes Wharf -> Hingham
-    {
-        title: "Hingham/Hull",
-        elementId: "boat-rowes-boat-f1",
-        StationName: "Rowes Wharf",
-        walkMin: 5,
-        routeId: "Boat-F1",
-        services: [
-            service("Boat-F1", 0, "Boat-Rowes", "Hingham"),
-            service("Boat-F1", 0, "Boat-Long", "Hull"),
-        ],
-    },
-
     // Long Wharf North -> East Boston
     {
-        title: "East Boston Ferry",
+        title: "(F3) LWN",
         elementId: "boat-long-boat-eastboston",
-        StationName: "Long Wharf",
+        StationName: "Long Wharf North",
         walkMin: 12,
         routeId: "Boat-EastBoston",
         services: [service("Boat-EastBoston", 0, "Boat-Long", "Lewis Mall")],
@@ -213,9 +231,9 @@ const PANELS = [
 
     // Long Wharf North -> Lynn
     {
-        title: "Lynn Ferry",
+        title: "(F5) LWN",
         elementId: "boat-long-boat-lynn",
-        StationName: "Long Wharf",
+        StationName: "Long Wharf North",
         walkMin: 12,
         routeId: "Boat-Lynn",
         services: [service("Boat-Lynn", 0, "Boat-Long", "Blossom Street")],
@@ -223,7 +241,7 @@ const PANELS = [
 
     // Aquarium -> Winthrop
     {
-        title: "Winthrop Ferry",
+        title: "(F6) - AQ",
         elementId: "boat-aquarium-boat-f6",
         StationName: "Aquarium",
         walkMin: 8,
@@ -233,7 +251,7 @@ const PANELS = [
 
     // Aquarium -> Quincy
     {
-        title: "Quincy Ferry",
+        title: "(F7) - AQ",
         elementId: "boat-aquarium-boat-f7",
         StationName: "Aquarium",
         walkMin: 8,
@@ -306,18 +324,32 @@ const NORTHSTATIONCR = [
     "CR-Haverhill",
     "CR-Newburyport",
 ];
+
+const FERRY = [
+    "Boat-F4",
+    "Boat-F1",
+    "Boat-EastBoston",
+    "Boat-Lynn",
+    "Boat-F6",
+    "Boat-F7",
+];
 // ===================== STATE =====================
 /** MBTA Data */
 let realtimeData = {};
 let alertData = {};
 
 /** NWS Data */
-let cacheWeather = null;
+let cachedWeather = null;
 let lastHourlyFetch = 0;
+
+/** Reuters RSS */
+let cachedNews = [];
+let lastNewsFetch = 0;
 
 const LIVE_ICON =
     '<i class="bi bi-broadcast-pin" style="font-size:0.9em; margin-right:4px;"></i>';
 
+const LIVE_ICON_2 = '<i class="bi bi-wifi-2 rotate-315"></i>';
 const SCHEDULE_ICON = '<i class="bi bi-calendar-date"></i>';
 const WALK_ICON = '<i class="bi bi-person-walking"></i>';
 const TRAIN_ICON = '<i class="bi bi-train-front"></i>';
@@ -522,16 +554,45 @@ function getPredictions(data) {
 async function fetchHourlyForecast() {
     const now = Date.now();
     // fetch weather every 20 mins
-    if (cacheWeather && now - lastHourlyFetch < 20 * 60000) {
-        return cacheWeather;
+    if (cachedWeather && now - lastHourlyFetch < 20 * 60000) {
+        return cachedWeather;
     }
 
     const url = "/api/weather/gridpoints/BOX/72,90/forecast/hourly"; // BOX(72,90) = Boston area
     const data = await fetchAPI(url);
-    cacheWeather = data?.properties?.periods ?? [];
+    cachedWeather = data?.properties?.periods ?? [];
     lastHourlyFetch = now;
 
-    return cacheWeather;
+    return cachedWeather;
+}
+
+/**
+ * Makes API call to Reuters.com and get US news
+ * q=site:reuters.com (articles from reuters)
+ * h1=en-US (English)
+ * gl=US (US-news)
+ * ceid=US:en (region and english)
+ * @returns
+ */
+async function fetchLegalNews() {
+    const now = Date.now();
+
+    if (cachedNews.length && now - lastNewsFetch < 60 * 60000) {
+        return cachedNews;
+    }
+
+    const url =
+        "https://api.rss2json.com/v1/api.json?rss_url=https://news.google.com/rss/search?q=site%3Areuters.com&hl=en-US&gl=US&ceid=US%3Aen";
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        cachedNews = data.items.slice(0, 5);
+        lastNewsFetch = now;
+        return cachedNews;
+    } catch (err) {
+        console.log("not workin");
+        return cachedNews;
+    }
 }
 
 // ===================== RENDER =====================
@@ -567,8 +628,8 @@ function renderPanel(panel) {
     const routeClass = getRouteClass(panel.routeId);
 
     let html = `
-        <div class="mbta-card ${routeClass}">
-            <div class="mbta-card-header">
+        <div class="card ${routeClass}">
+            <div class="card-header">
                 <span class="station-line">
                 <span class="icon">${panel.routeId.startsWith("Boat-") ? WATER_ICON : TRAIN_ICON}</span>
                 ${panel.title}</span> 
@@ -578,7 +639,7 @@ function renderPanel(panel) {
                     ${panel.walkMin} min
                 </span>
             </div>
-            <div class="mbta-card-body">
+            <div class="card-body">
         `;
 
     // Group services by direction(eg southbound, northbound) in each line
@@ -675,8 +736,8 @@ function renderCRPanel(panels, stationName, stationClass, walkMin) {
     if (!predContainer) return;
 
     let html = `
-        <div class="mbta-card route-CR">
-            <div class="mbta-card-header">
+        <div class="card route-CR">
+            <div class="card-header">
                 <span class="station-line"> ${TRAIN_ICON} Commuter Rail</span>
                 <span class="station-name">${stationName}</span>
                 <span class="walk-min">
@@ -686,10 +747,10 @@ function renderCRPanel(panels, stationName, stationClass, walkMin) {
             </div>
 
             <div class="cr-grid">
-                <div class="cr-header">Line</div>
-                <div class="cr-header">Destination</div>
-                <div class="cr-header">Departure Time</div>
-                <div class="cr-header">Alert</div>
+                <div class="grid-header cr-header">Line</div>
+                <div class="grid-header cr-header">Destination</div>
+                <div class="grid-header cr-header">Departure Time</div>
+                <div class="grid-header cr-header">Alert</div>
             
         `;
 
@@ -729,6 +790,79 @@ function renderCRPanel(panels, stationName, stationClass, walkMin) {
                         </div>
 
                         ${alert ? `<div class="cr-alert"><div class="cr-alert-ticker"><span class="cr-alert-text">⚠️ ${alert.attributes.header}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⚠️ ${alert.attributes.header}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div></div>` : `<div class="cr-alert"></div>`}
+                    `;
+        });
+    });
+    html += `</div></div>`;
+    predContainer.innerHTML = html;
+
+    if (!predContainer.innerHTML.trim()) {
+        predContainer.innerHTML = '<div class="no-trains">No trains</div>';
+    }
+}
+
+/**
+ * Render a collapsed ferry panel
+ * @param {*} panel - a train line
+ * @returns
+ */
+function renderFerryPanel(panels, stationClass) {
+    const container = document.querySelector(`.${stationClass}`);
+    if (!container) return;
+
+    const predContainer = container.querySelector(".predictions");
+    if (!predContainer) return;
+
+    let html = `
+        <div class="card route-Boat">
+            <div class="card-header">
+                <span class="station-line"> ${WATER_ICON} Ferry </span>
+            </div>
+            <div class="card-body">
+            <div class="ferry-grid">
+                <div class="grid-header ferry-header">From</div>
+                <div class="grid-header ferry-header">To</div>
+                <div class="grid-header ferry-header">Arrives(min)</div>   
+                        
+        `;
+
+    panels.forEach((panel) => {
+        panel.services.forEach((service) => {
+            const key = buildKey(panel, service);
+            let preds = getPredictions(realtimeData[key]);
+
+            preds = preds.filter(
+                (p) => p.headsign === service.headsignContains,
+            );
+            if (!preds.length) return;
+            // renders predicted time horizontally
+            const times = preds
+                .slice(0, 2)
+                .map((p) => {
+                    return `
+                        <div class="pred-time ${p.isRealtime ? "realtime" : "scheduled"}">
+                            <div>${p.isRealtime ? LIVE_ICON : SCHEDULE_ICON} ${formatTime(p.minutes)}</div>
+                        </div>
+                    `;
+                })
+                .join("");
+
+            const p = preds[0];
+            const [destination, via] = p.headsign.split(" via ");
+
+            // puts alerts bottom of panel
+            const alert = getAlertForRoute(panel.routeId);
+            html += `
+            
+                        <div class="ferry-stop">${panel.title}</div>
+                        <div>
+                        <div class="ferry-line">${destination}</div>
+                        ${via ? `<div class="ferry-destination-via">via ${via}</div>` : ""} <!-- COMMENT: Doesn't always exist -->
+                        </div>
+                        <div class="ferry-times">
+                            ${times}
+                        </div>
+
                     `;
         });
     });
@@ -794,9 +928,9 @@ function forecastToEmoji(forecast, isDaytime) {
  */
 function renderWeather() {
     const container = document.getElementById("weather-box");
-    if (!container || !cacheWeather?.length) return;
+    if (!container || !cachedWeather?.length) return;
 
-    const current = cacheWeather[0];
+    const current = cachedWeather[0];
     const tempF = Math.round(current.temperature);
     const description = current.shortForecast;
     const emoji = forecastToEmoji(description, current.isDaytime);
@@ -809,8 +943,8 @@ function renderWeather() {
 
     if (!container.querySelector(".weather-card")) {
         container.innerHTML = `
-        <div class="mbta-card weather-card">
-            <div class="mbta-card-body weather-card-body">
+        <div class="card weather-card">
+            <div class="card-body weather-card-body">
                 <span class="weather-temp">${tempF}°</span>
                 <span class="weather-emoji">${emoji}</span>
                 <div class="weather-spacer"></div>
@@ -830,6 +964,36 @@ function renderWeather() {
         card.querySelector(".weather-emoji").textContent = emoji;
         card.querySelector(".weather-date").textContent = date;
     }
+}
+
+function renderNews(articles) {
+    const container = document.getElementById("news-box");
+    if (!container) return;
+
+    if (!articles.length) {
+        container.innerHTML = `<div>No updates.</div>`;
+        return;
+    }
+
+    const main = articles[0];
+
+    const html = `
+        <div>
+            <div class="news-card"> News Updates </div>
+                <div class="card-body news-body"> 
+                    <div class="news-feature"> 
+                        ${main.thumbnail ? `<img src="${main.thumbnail}" />` : ""}
+                        <div class="news-title">${main.title}</div>
+                </div>
+
+                <div class="news-list"> ${articles
+                    .slice(1)
+                    .map((a) => `<div>${a.title}</div>`)
+                    .join("")}</div>
+            </div>
+        </div>
+        `;
+    container.innerHTML = html;
 }
 
 // ===================== UPDATE LOOP =====================
@@ -866,8 +1030,13 @@ async function updateAll() {
     const northPanels = PANELS.filter((p) =>
         NORTHSTATIONCR.includes(p.routeId),
     );
+    const ferryPanels = PANELS.filter((p) => FERRY.includes(p.routeId));
     renderCRPanel(southPanels, "South Station", "south-station-cr", 7);
     renderCRPanel(northPanels, "North Station", "north-station-cr", 21);
+    renderFerryPanel(ferryPanels, "ferry");
+
+    const news = await fetchLegalNews();
+    renderNews(news);
 
     renderWeather();
 }

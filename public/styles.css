@@ -91,6 +91,15 @@ body {
     margin-bottom: 2rem;
 }
 
+.container-5 {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
 .container-ferry {
     display: grid;
     grid-template-columns: calc(50% - 0.625rem) calc(50% - 0.625rem);
@@ -108,9 +117,17 @@ body {
     min-height: 0;
 }
 
+.ferry-grid {
+    grid-template-columns: 2fr 3fr 3fr;
+}
+
+.cr-grid {
+    grid-template-columns: 1fr 2fr 4fr 4fr;
+}
+
+.ferry-grid,
 .cr-grid {
     display: grid;
-    grid-template-columns: 1fr 2fr 4fr 4fr;
     background: #f2f3f5;
     border-radius: 6px;
 }
@@ -121,13 +138,20 @@ body {
 .cr-grid > div:nth-child(8n + 8) {
     background: var(--mbta-warm-white-90);
 }
-.cr-header {
+.grid-header {
     background: #f2f3f5;
     font-weight: 700;
     text-transform: uppercase;
     font-size: 20px;
     color: #616161;
+}
+
+.cr-header {
     padding: 3px 40px;
+}
+
+.ferry-header {
+    padding: 3px 20px;
 }
 
 .cr-line {
@@ -138,23 +162,52 @@ body {
     font-size: 20px;
 }
 
-.cr-times {
+.ferry-stop {
+    border-top: 1px solid #d7d8da;
+    padding-left: 20px;
+    padding-top: 3px;
+    font-weight: 600;
+    font-size: 20px;
+}
+.ferry-line {
+    font-weight: 600;
+    font-size: 20px;
+}
+.cr-times,
+.ferry-times {
     display: flex;
-    gap: 80px;
     font-weight: 700;
     font-size: 20px;
     align-items: center;
 }
 
+.ferry-times {
+    gap: 30px;
+}
+
+.cr-times {
+    gap: 60px;
+}
 .cr-times .pred-time {
     text-align: left;
     min-width: 120px;
 }
 
+.ferry-times .pred-time {
+    text-align: left;
+    min-width: 90px;
+}
+
 .cr-line,
-.cr-times {
+.cr-times,
+.ferry-times {
     border-top: 1px solid #d7d8da;
     padding: 3px 40px;
+}
+
+.ferry-line {
+    border-top: 1px solid #d7d8da;
+    padding: 3px 20px;
 }
 
 .cr-alert {
@@ -211,7 +264,7 @@ body {
 /* ===== NO DECORATION RULES ===== */
 /* No box-shadow, no hover effects, no transforms, no transitions, no gradients */
 
-.mbta-card {
+.card {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -221,7 +274,7 @@ body {
 }
 
 /* HEADER */
-.mbta-card-header {
+.card-header {
     color: white;
     font-size: 28px;
     font-weight: 700;
@@ -238,19 +291,28 @@ body {
     padding: 15px 15px;
 }
 
-.station-name {
+.station-name,
+.walk-min {
     font-weight: 200;
     font-size: 20px;
     padding: 23px 0px;
 }
 
 .walk-min {
-    padding: 15px 10px;
+    padding-right: 10px;
     margin-left: auto;
 }
 
+.rotate-315 {
+    transform: rotate(315deg);
+}
+
+.bi {
+    display: inline-block;
+}
+
 /* BODY */
-.mbta-card-body {
+.card-body {
     background: #f2f3f5;
     flex: 1;
     min-height: 0;
@@ -260,22 +322,22 @@ body {
     overflow-y: hidden;
 }
 
-.route-Red .mbta-card-header {
+.route-Red .card-header {
     background: #da291c;
 }
-.route-Orange .mbta-card-header {
+.route-Orange .card-header {
     background: #ed8b00;
 }
-.route-Blue .mbta-card-header {
+.route-Blue .card-header {
     background: #003da5;
 }
-.route-Green .mbta-card-header {
+.route-Green .card-header {
     background: #00843d;
 }
-.route-CR .mbta-card-header {
+.route-CR .card-header {
     background: #80276c;
 }
-.route-Boat .mbta-card-header {
+.route-Boat .card-header {
     background: #add8e6;
 }
 
@@ -327,6 +389,12 @@ body {
 .destination-via {
     font-size: 20px;
     color: #555;
+}
+
+.ferry-destination-via {
+    font-size: 15px;
+    color: #555;
+    padding-left: 20px;
 }
 
 /* TIMES */
@@ -412,6 +480,50 @@ body {
     font-weight: 700;
 }
 
+/* ===== RSS ===== */
+.news-card {
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 3px 3px 0 0;
+    overflow: hidden;
+    height: 66px;
+    flex-shrink: 0;
+    display: flex;
+    text-align: center;
+    background-color: #1c1e23;
+    padding-top: 10px;
+    flex: 1;
+    flex-direction: column;
+    border: 1px solid #e6e7e8;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.news-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.news-feature {
+    width: 100%;
+    height: 120px;
+    border-radius: 6px;
+}
+
+.news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.news-item {
+    font-size: 0.85rem;
+    color: #444;
+    line-height: 1.2;
+}
+
 /* ===== RESPONSIVE: 1080px breakpoint ===== */
 @media (max-width: 1080px) {
     .container-1 {
@@ -449,7 +561,7 @@ body {
         display: none;
     }
 
-    .mbta-card-header {
+    .card-header {
         font-size: 25px;
     }
     .station-name {
