@@ -978,18 +978,19 @@ function renderNews(articles) {
     const main = articles[0];
 
     const html = `
-        <div>
-            <div class="news-card"> News Updates </div>
-                <div class="card-body news-body"> 
-                    <div class="news-feature"> 
-                        ${main.thumbnail ? `<img src="${main.thumbnail}" />` : ""}
-                        <div class="news-title">${main.title}</div>
+        <div class="card route-News">
+            <div class="card-header">News Updates</div>
+            <div class="card-body news-body">
+                <div class="news-feature">
+                    ${main.thumbnail ? `<img src="${main.thumbnail}" alt="">` : ""}
+                    <div class="news-title">${main.title}</div>
                 </div>
-
-                <div class="news-list"> ${articles
-                    .slice(1)
-                    .map((a) => `<div>${a.title}</div>`)
-                    .join("")}</div>
+                <div class="news-list">
+                    ${articles
+                        .slice(1)
+                        .map((a) => `<div class="news-item">${a.title}</div>`)
+                        .join("")}
+                </div>
             </div>
         </div>
         `;
