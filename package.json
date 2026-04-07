@@ -1,5 +1,9 @@
 {
-  "devDependencies": {
-    "wrangler": "^4.66.0"
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
   }
 }
