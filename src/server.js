@@ -1,5 +1,5 @@
 import express from "express";
-import { PANELS, NEWS_FEEDS, buildKey } from "./config.js";
+import { PANELS, NEWS_FEEDS, buildKey } from "/opt/mbta-proxy/config.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
