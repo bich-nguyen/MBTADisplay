@@ -70,10 +70,10 @@ function transformRealtime(json) {
         const headsign = tripsById[tripId];
         if (!headsign) return;
 
-        results.push({ headsign, minutes, isRealtime: !!prediction });
+        results.push({ headsign, departureTime: timeStr, isRealtime: !!prediction });
     });
 
-    return results.sort((a, b) => a.minutes - b.minutes);
+    return results.sort((a, b) => new Date(a.departureTime) - new Date(b.departureTime));
 }
 
 async function refreshRealtime() {

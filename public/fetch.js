@@ -30,5 +30,6 @@ async function fetchData() {
 
 function getPredictions(data) {
     if (!Array.isArray(data)) return [];
-    return data;
+    const now = new Date();
+    return data.map((d) => ({ ...d, minutes: (new Date(d.departureTime) - now) / 60000 }));
 }
