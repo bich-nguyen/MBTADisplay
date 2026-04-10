@@ -34,7 +34,7 @@ const PANELS = [
             svc("Green-D", 0, "place-pktrm", "Riverside"),
             svc("Green-E", 0, "place-pktrm", "Heath Street"),
             svc("Green-E", 1, "place-pktrm", "Medford"),
-            svc("Green-B", 1, "place-pktrm", "Lechmere"),
+            svc("Green-B", 1, "place-pktrm", "Government Center"),
         ],
     },
 ];

@@ -64,10 +64,7 @@ function renderStationGroup(group) {
             const preds = getPredictions(realtimeData[key])
                 .filter((p) => p.headsign.includes(svc.headsignContains))
                 .filter((p) => p.minutes >= group.walkMin);
-            if (!preds.length) {
-                console.error("no preds —", key, ":", realtimeData[key]);
-                return;
-            }
+            if (!preds.length) return;
             const headsign = preds[0].headsign;
             if (!byDestination.has(headsign))
                 byDestination.set(headsign, { routeId: svc.routeId ?? panel.routeId, times: [] });

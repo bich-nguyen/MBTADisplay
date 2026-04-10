@@ -20,11 +20,7 @@ async function fetchAPI(url) {
 async function fetchData() {
     const data = await fetchAPI("/api/data");
     if (!data) return;
-    if (data.realtime) {
-        realtimeData = data.realtime;
-        const firstKey = Object.keys(data.realtime)[0];
-        console.error("realtime sample —", firstKey, ":", data.realtime[firstKey]);
-    }
+    if (data.realtime) realtimeData = data.realtime;
     if (data.weather)  cachedWeather = data.weather;
     if (data.news?.length) cachedNews = data.news;
 }
