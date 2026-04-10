@@ -1,5 +1,7 @@
 import express from "express";
 import { PANELS, NEWS_FEEDS, buildKey } from "./config.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +14,7 @@ const JSON_HEADERS = {
     "Access-Control-Allow-Origin": "*",
 };
 
+app.use(express.static("public"));
 
 // ===================== CACHE =====================
 
