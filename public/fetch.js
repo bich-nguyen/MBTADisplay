@@ -5,8 +5,6 @@ let cachedWeather = null;
 let lastHourlyFetch = 0;
 let cachedNews = [];
 let lastNewsFetch = 0;
-let cachedBluebikes = null;
-let lastBikesFetch = 0;
 
 // ===================== FETCH =====================
 
@@ -54,16 +52,6 @@ async function fetchLegalNews() {
     return cachedNews;
 }
 
-async function fetchBluebikes() {
-    const now = Date.now();
-    if (cachedBluebikes && now - lastBikesFetch < 5 * 60000) return cachedBluebikes;
-    const data = await fetchAPI("/api/bluebikes");
-    if (data?.stations) {
-        cachedBluebikes = data.stations;
-        lastBikesFetch = now;
-    }
-    return cachedBluebikes;
-}
 
 
 // ===================== PREDICTION TRANSFORM =====================
