@@ -1,12 +1,15 @@
-https://mbtadash.nbkelley.com/v2
+## Live Production
+http://transit.intra.plgt.com/
 
 
-
-Create .env fil in root and fill in {}:
+## Local Development
+1. Create a ".env" file in the roject root and fill in {}:
 MBTA_API_KEY = "{your_api_key}"
-WEATHER_CONTACT = "{email}@gmail.com"
+WEATHER_CONTACT = "{email@domain.com}"
 
+2. Install dependencies & start the server
+    npm install
+    npm start
 
-Run in powershell 
-npm install -g wrangler
-wrangler dev
+3. Open in brower:
+http://localhost:3000
