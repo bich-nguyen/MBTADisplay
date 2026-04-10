@@ -151,7 +151,7 @@ function renderFerryPanel(panels, stationClass) {
             const allPreds = svcs
                 .flatMap((svc) =>
                     getPredictions(realtimeData[buildKey(panel, svc)])
-                        .filter((p) => p.headsign === svc.headsignContains)
+                        .filter((p) => p.headsign.includes(svc.headsignContains))
                 )
                 .sort((a, b) => a.minutes - b.minutes);
             if (!allPreds.length) return "";
