@@ -5,6 +5,8 @@ let cachedWeather = null;
 let lastHourlyFetch = 0;
 let cachedNews = [];
 let lastNewsFetch = 0;
+let cachedBluebikes = null;
+let lastBikesFetch = 0;
 
 // ===================== FETCH =====================
 
@@ -44,18 +46,23 @@ async function fetchHourlyForecast() {
 async function fetchLegalNews() {
     const now = Date.now();
     if (cachedNews.length && now - lastNewsFetch < 60 * 60000) return cachedNews;
-    const results = await Promise.all(
-        NEWS_FEEDS.map((feed) =>
-            fetchAPI(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed)}`)
-                .then((data) => (data?.items ?? []).slice(0, 3))
-        )
-    );
-    const merged = results.flat();
-    if (merged.length) {
-        cachedNews = merged;
+    const data = await fetchAPI("/api/news");
+    if (data?.length) {
+        cachedNews = data;
         lastNewsFetch = now;
     }
     return cachedNews;
+}
+
+async function fetchBluebikes() {
+    const now = Date.now();
+    if (cachedBluebikes && now - lastBikesFetch < 5 * 60000) return cachedBluebikes;
+    const data = await fetchAPI("/api/bluebikes");
+    if (data?.stations) {
+        cachedBluebikes = data.stations;
+        lastBikesFetch = now;
+    }
+    return cachedBluebikes;
 }
 
 
