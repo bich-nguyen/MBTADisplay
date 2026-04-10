@@ -40,22 +40,42 @@ function getCached(key) {
 
 // ===================== FETCHERS =====================
 
-function trimSchedules(json) {
-    if (!json?.data) return json;
-    const cutoff = Date.now() + 120 * 60_000;
-    const kept = json.data.filter((s) => {
-        const t = s.attributes.departure_time ?? s.attributes.arrival_time;
-        return t && new Date(t).getTime() <= cutoff;
-    });
-    const keptTripIds = new Set(kept.map((s) => s.relationships?.trip?.data?.id).filter(Boolean));
-    const included = (json.included ?? []).filter((item) => {
-        if (item.type === "prediction" || item.type === "trip") {
-            const id = item.type === "trip" ? item.id : item.relationships?.trip?.data?.id;
-            return keptTripIds.has(id);
+function transformRealtime(json) {
+    if (!json?.data) return [];
+    const now = new Date();
+    const cutoffMs = now.getTime() + 120 * 60_000;
+
+    const predictionsByTrip = {};
+    const tripsById = {};
+    (json.included ?? []).forEach((item) => {
+        if (item.type === "prediction") {
+            const tripId = item.relationships?.trip?.data?.id;
+            if (tripId) predictionsByTrip[tripId] = item.attributes;
+        } else if (item.type === "trip") {
+            tripsById[item.id] = item.attributes.headsign;
         }
-        return true;
     });
-    return { ...json, data: kept, included };
+
+    const results = [];
+    json.data.forEach((schedule) => {
+        const tripId = schedule.relationships?.trip?.data?.id;
+        const prediction = predictionsByTrip[tripId];
+        const timeStr =
+            prediction?.departure_time ?? prediction?.arrival_time ??
+            schedule.attributes.departure_time ?? schedule.attributes.arrival_time;
+        if (!timeStr) return;
+
+        const timeMs = new Date(timeStr).getTime();
+        const minutes = (timeMs - now.getTime()) / 60_000;
+        if (minutes < -1 || timeMs > cutoffMs) return;
+
+        const headsign = tripsById[tripId];
+        if (!headsign) return;
+
+        results.push({ headsign, minutes, isRealtime: !!prediction });
+    });
+
+    return results.sort((a, b) => a.minutes - b.minutes);
 }
 
 async function refreshRealtime() {
@@ -76,7 +96,7 @@ async function refreshRealtime() {
                     if (svc.directionId !== undefined) params.set("filter[direction_id]", String(svc.directionId));
                     const res = await fetch(`https://api-v3.mbta.com/schedules?${params}`);
                     if (!res.ok) throw new Error(`MBTA schedule ${res.status} for ${key}`);
-                    results[key] = trimSchedules(await res.json());
+                    results[key] = transformRealtime(await res.json());
                 })
             )
         );
