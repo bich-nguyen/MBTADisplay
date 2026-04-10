@@ -55,24 +55,9 @@ const PANELS = [
     { title: "Providence/Stoughton", routeId: "CR-Providence", services: [service("CR-Providence", 0, "place-sstat", "Providence"), service("CR-Providence", 0, "place-sstat", "Wickford"), service("CR-Providence", 0, "place-sstat", "Stoughton")] },
     { title: "Kingston",             routeId: "CR-Kingston",   services: [service("CR-Kingston",   0, "place-sstat", "Kingston")] },
     { title: "Needham",              routeId: "CR-Needham",    services: [service("CR-Needham",    0, "place-sstat", "Needham")] },
-    // Ferry
-    { title: "(F1) RW",  routeId: "Boat-F1",       services: [service("Boat-F1", 0, "Boat-Rowes", "Hingham")] },
-    {
-        title: "(F2H) LWN", routeId: "Boat-F1",
-        services: [
-            service("Boat-F1", 0, "Boat-Long", "Hingham via Hull"),
-            service("Boat-F1", 0, "Boat-Long", "Hull"),
-            service("Boat-F1", 0, "Boat-Long", "Hingham via Logan Airport & Hull"),
-            service("Boat-F1", 0, "Boat-Long", "HingHam via Logan Airport"),
-            service("Boat-F1", 0, "Boat-Long", "Hingham"),
-            service("Boat-F1", 0, "Boat-Long", "Hull via Logan Airport"),
-        ],
-    },
-    { title: "(F4) LWS",  routeId: "Boat-F4",       services: [service("Boat-F4",       0, "Boat-Long-South", "Charlestown")] },
-    { title: "(F3) LWN",  routeId: "Boat-EastBoston",services: [service("Boat-EastBoston",0, "Boat-Long",       "Lewis Mall")] },
-    { title: "(F5) LWN",  routeId: "Boat-Lynn",      services: [service("Boat-Lynn",     0, "Boat-Long",       "Blossom Street")] },
-    { title: "(F6) - AQ", routeId: "Boat-F6",        services: [service("Boat-F6",       0, "Boat-Aquarium",   "Winthrop")] },
-    { title: "(F7) - AQ", routeId: "Boat-F7",        services: [service("Boat-F7",       0, "Boat-Aquarium",   "Quincy")] },
+    // Ferry (year-round only)
+    { title: "(F1) RW", routeId: "Boat-F1", services: [service("Boat-F1", 0, "Boat-Rowes",      "Hingham")] },
+    { title: "(F4) LWS",routeId: "Boat-F4", services: [service("Boat-F4", 0, "Boat-Long-South", "Charlestown")] },
     // North Station – Commuter Rail
     { title: "Fitchburg",          routeId: "CR-Fitchburg",   services: [service("CR-Fitchburg",   0, "place-north", "Fitchburg"), service("CR-Fitchburg", 0, "place-north", "Wachusett")] },
     { title: "Lowell",             routeId: "CR-Lowell",      services: [service("CR-Lowell",      0, "place-north", "Lowell")] },
@@ -89,9 +74,7 @@ const NORTHSTATIONCR = [
     "CR-Fitchburg", "CR-Lowell", "CR-Haverhill", "CR-Newburyport",
 ];
 
-const FERRY = [
-    "Boat-F4", "Boat-F1", "Boat-EastBoston", "Boat-Lynn", "Boat-F6", "Boat-F7",
-];
+const FERRY = ["Boat-F1", "Boat-F4"];
 
 const SUBWAY_STATION_GROUPS = [
     { stationName: "South Station", elementId: "south-station-red",    walkMin: 7,  panelRouteIds: ["Red"] },
@@ -102,12 +85,6 @@ const SUBWAY_STATION_GROUPS = [
 const LIVE_ICON     = '<i class="bi bi-broadcast-pin" style="font-size:0.9em; margin-right:4px;"></i>';
 const SCHEDULE_ICON = '<i class="bi bi-calendar-date"></i>';
 const WALK_ICON     = '<i class="bi bi-person-walking"></i>';
-
-const NEWS_FEEDS = [
-    "https://masslawyersweekly.com/feed/",
-    "http://rss.justia.com/BostonLawyerBlogCom",
-    "https://www.bostoncriminaldefenselawyer-blog.com/feed/",
-];
 
 function buildKey(panel, svc) {
     const routeId = svc.routeId ?? panel.routeId;

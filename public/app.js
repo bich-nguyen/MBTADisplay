@@ -22,11 +22,15 @@ async function updateAll() {
     renderWeather();
 }
 
+function startPolling() {
+    updateAll();
+    setInterval(updateAll, 60000);
+}
+
 async function initialLoad() {
     await fetchData();
     if (Object.keys(realtimeData).length > 0) {
-        updateAll();
-        setInterval(updateAll, 30000);
+        startPolling();
         return;
     }
     // Server hasn't completed its first fetch yet — retry every 5s
@@ -34,8 +38,7 @@ async function initialLoad() {
         await fetchData();
         if (Object.keys(realtimeData).length > 0) {
             clearInterval(retryId);
-            updateAll();
-            setInterval(updateAll, 30000);
+            startPolling();
         }
     }, 5000);
 }

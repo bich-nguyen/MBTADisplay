@@ -4,8 +4,6 @@
 
 :root {
     --mbta-cool-black-15: #171f26;
-    --font-family-mono:
-        "Helvetica Neue", Helvetica, Arial, sans-serif;
     --font-size-body: 18px;
     --font-size-smaller: 12px;
 }
@@ -169,12 +167,6 @@ body {
     font-size: var(--font-size-body);
 }
 
-.ferry-destination-via {
-    font-size: var(--font-size-smaller);
-    color: #555;
-    padding-left: 20px;
-}
-
 .ferry-times {
     display: flex;
     gap: 30px;
@@ -284,22 +276,6 @@ body {
     display: flex;
     align-items: center;
     gap: 16px;
-}
-
-.weather-meta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 2px;
-}
-
-.weather-date,
-.weather-location {
-    font-size: var(--font-size-body);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    opacity: 0.7;
 }
 
 #timestamp {

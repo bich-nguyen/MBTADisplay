@@ -4,7 +4,6 @@ function getLinePill(routeId) {
     if (routeId === "Red")           return '<span class="line-pill pill-red">RL</span>';
     if (routeId === "Orange")        return '<span class="line-pill pill-orange">OL</span>';
     if (routeId === "Blue")          return '<span class="line-pill pill-blue">BL</span>';
-    if (routeId === "Green")         return '<span class="line-pill pill-green">GL</span>';
     if (routeId === "Green-B")       return '<span class="line-pill pill-green">B</span>';
     if (routeId === "Green-C")       return '<span class="line-pill pill-green">C</span>';
     if (routeId === "Green-D")       return '<span class="line-pill pill-green">D</span>';
