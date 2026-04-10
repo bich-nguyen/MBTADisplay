@@ -22,6 +22,23 @@ async function updateAll() {
     renderWeather();
 }
 
+async function initialLoad() {
+    await fetchData();
+    if (Object.keys(realtimeData).length > 0) {
+        updateAll();
+        setInterval(updateAll, 30000);
+        return;
+    }
+    // Server hasn't completed its first fetch yet — retry every 5s
+    const retryId = setInterval(async () => {
+        await fetchData();
+        if (Object.keys(realtimeData).length > 0) {
+            clearInterval(retryId);
+            updateAll();
+            setInterval(updateAll, 30000);
+        }
+    }, 5000);
+}
+
 startClock();
-updateAll();
-setInterval(updateAll, 30000);
+initialLoad();
