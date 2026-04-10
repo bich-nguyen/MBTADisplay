@@ -57,10 +57,14 @@ function renderStationGroup(group) {
     const byDestination = new Map();
     groupPanels.forEach((panel) => {
         panel.services.forEach((svc) => {
-            const preds = getPredictions(realtimeData[buildKey(panel, svc)])
+            const key = buildKey(panel, svc);
+            const preds = getPredictions(realtimeData[key])
                 .filter((p) => p.headsign.includes(svc.headsignContains))
                 .filter((p) => p.minutes >= group.walkMin);
-            if (!preds.length) return;
+            if (!preds.length) {
+                console.error("no preds —", key, ":", realtimeData[key]);
+                return;
+            }
             const headsign = preds[0].headsign;
             if (!byDestination.has(headsign))
                 byDestination.set(headsign, { routeId: svc.routeId ?? panel.routeId, times: [] });
