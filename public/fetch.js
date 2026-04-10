@@ -2,9 +2,7 @@
 
 let realtimeData = {};
 let cachedWeather = null;
-let lastHourlyFetch = 0;
 let cachedNews = [];
-let lastNewsFetch = 0;
 
 // ===================== FETCH =====================
 
@@ -19,39 +17,13 @@ async function fetchAPI(url) {
     }
 }
 
-async function fetchRealtime() {
-    const promises = [];
-    PANELS.forEach((panel) => {
-        panel.services.forEach((svc) => {
-            const key = buildKey(panel, svc);
-            const routeId = svc.routeId ?? panel.routeId;
-            let url = `/api/mbta/schedules?filter[stop]=${svc.stopId}&filter[route]=${routeId}&include=prediction,trip`;
-            if (svc.directionId !== undefined) url += `&filter[direction_id]=${svc.directionId}`;
-            promises.push(fetchAPI(url).then((data) => { realtimeData[key] = data ?? {}; }));
-        });
-    });
-    await Promise.all(promises);
+async function fetchData() {
+    const data = await fetchAPI("/api/data");
+    if (!data) return;
+    if (data.realtime) realtimeData = data.realtime;
+    if (data.weather)  cachedWeather = data.weather;
+    if (data.news?.length) cachedNews = data.news;
 }
-
-async function fetchHourlyForecast() {
-    const now = Date.now();
-    if (cachedWeather && now - lastHourlyFetch < 20 * 60000) return;
-    const data = await fetchAPI("/api/weather/gridpoints/BOX/72,90/forecast/hourly");
-    cachedWeather = data?.properties?.periods ?? [];
-    lastHourlyFetch = now;
-}
-
-async function fetchLegalNews() {
-    const now = Date.now();
-    if (cachedNews.length && now - lastNewsFetch < 60 * 60000) return cachedNews;
-    const data = await fetchAPI("/api/news");
-    if (data?.length) {
-        cachedNews = data;
-        lastNewsFetch = now;
-    }
-    return cachedNews;
-}
-
 
 
 // ===================== PREDICTION TRANSFORM =====================

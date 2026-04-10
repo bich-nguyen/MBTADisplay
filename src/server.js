@@ -1,4 +1,5 @@
 import express from "express";
+import { PANELS, NEWS_FEEDS, buildKey } from "./config.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,73 +12,142 @@ const JSON_HEADERS = {
     "Access-Control-Allow-Origin": "*",
 };
 
-function sendError(res, message, status = 500) {
-    res.status(status).set(JSON_HEADERS).json({ error: message, status });
+
+// ===================== CACHE =====================
+
+const INTERVALS = {
+    realtime: 30_000,
+    alerts:   30_000,
+    weather:  20 * 60_000,
+    news:     60 * 60_000,
+};
+
+const cache = {
+    realtime: { data: null, fetchedAt: 0 },
+    alerts:   { data: null, fetchedAt: 0 },
+    weather:  { data: null, fetchedAt: 0 },
+    news:     { data: null, fetchedAt: 0 },
+};
+
+function getCached(key) {
+    const { data, fetchedAt } = cache[key];
+    if (!data || Date.now() - fetchedAt > 2 * INTERVALS[key]) return null;
+    return data;
 }
 
-// MBTA API proxy
-app.get("/api/mbta*", async (req, res) => {
-    if (!MBTA_API_KEY) {
-        return sendError(res, "Missing MBTA_API_KEY");
-    }
-    const mbtaPath = req.path.replace("/api/mbta", "");
-    const params = new URLSearchParams(req.query);
-    params.set("api_key", MBTA_API_KEY);
-    const apiUrl = `https://api-v3.mbta.com${mbtaPath}?${params}`;
-    try {
-        const response = await fetch(apiUrl);
-        const data = await response.text();
-        res.status(response.status).set(JSON_HEADERS).send(data);
-    } catch (e) {
-        sendError(res, "MBTA fetch failed");
-    }
-});
+// ===================== FETCHERS =====================
 
-// Weather API proxy
-app.get("/api/weather*", async (req, res) => {
-    const weatherPath = req.path.replace("/api/weather", "");
-    if (!weatherPath) {
-        return sendError(res, "Missing weather path", 400);
-    }
-    const params = new URLSearchParams(req.query);
-    const apiUrl = `https://api.weather.gov${weatherPath}${params.size ? "?" + params : ""}`;
+async function refreshRealtime() {
+    if (!MBTA_API_KEY) return;
+    const results = {};
     try {
-        const response = await fetch(apiUrl, {
+        await Promise.all(
+            PANELS.flatMap((panel) =>
+                panel.services.map(async (svc) => {
+                    const key = buildKey(panel, svc);
+                    const routeId = svc.routeId ?? panel.routeId;
+                    const params = new URLSearchParams({
+                        "filter[stop]": svc.stopId,
+                        "filter[route]": routeId,
+                        include: "prediction,trip",
+                        api_key: MBTA_API_KEY,
+                    });
+                    if (svc.directionId !== undefined) params.set("filter[direction_id]", String(svc.directionId));
+                    const res = await fetch(`https://api-v3.mbta.com/schedules?${params}`);
+                    if (!res.ok) throw new Error(`MBTA schedule ${res.status} for ${key}`);
+                    results[key] = await res.json();
+                })
+            )
+        );
+        cache.realtime = { data: results, fetchedAt: Date.now() };
+    } catch (e) {
+        console.error("Realtime refresh failed:", e.message);
+        cache.realtime = { data: null, fetchedAt: 0 };
+    }
+}
+
+async function refreshAlerts() {
+    if (!MBTA_API_KEY) return;
+    try {
+        const params = new URLSearchParams({
+            "filter[activity]": "BOARD,EXIT,RIDE",
+            api_key: MBTA_API_KEY,
+        });
+        const res = await fetch(`https://api-v3.mbta.com/alerts?${params}`);
+        if (!res.ok) throw new Error(`MBTA alerts ${res.status}`);
+        const json = await res.json();
+        cache.alerts = { data: json.data ?? [], fetchedAt: Date.now() };
+    } catch (e) {
+        console.error("Alerts refresh failed:", e.message);
+        cache.alerts = { data: null, fetchedAt: 0 };
+    }
+}
+
+async function refreshWeather() {
+    try {
+        const res = await fetch("https://api.weather.gov/gridpoints/BOX/72,90/forecast/hourly", {
             headers: {
                 "User-Agent": `MBTADashboard/1.0 (${WEATHER_CONTACT})`,
                 Accept: "application/geo+json",
             },
         });
-        const data = await response.text();
-        res.status(response.status).set(JSON_HEADERS).send(data);
+        if (!res.ok) throw new Error(`Weather ${res.status}`);
+        const json = await res.json();
+        cache.weather = { data: json.properties?.periods ?? [], fetchedAt: Date.now() };
     } catch (e) {
-        sendError(res, "Weather fetch failed");
+        console.error("Weather refresh failed:", e.message);
+        cache.weather = { data: null, fetchedAt: 0 };
     }
-});
+}
 
-// News proxy (rss2json feeds)
-const NEWS_FEEDS = [
-    "https://masslawyersweekly.com/feed/",
-    "http://rss.justia.com/BostonLawyerBlogCom",
-    "https://www.bostoncriminaldefenselawyer-blog.com/feed/",
-];
-
-app.get("/api/news", async (_req, res) => {
+async function refreshNews() {
     try {
         const results = await Promise.all(
             NEWS_FEEDS.map((feed) =>
                 fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed)}`)
                     .then((r) => r.json())
-                    .then((data) => (data?.items ?? []).slice(0, 3))
+                    .then((d) => (d?.items ?? []).slice(0, 3))
                     .catch(() => [])
             )
         );
-        res.set(JSON_HEADERS).json(results.flat());
+        const merged = results.flat();
+        if (merged.length) {
+            cache.news = { data: merged, fetchedAt: Date.now() };
+        } else {
+            cache.news = { data: null, fetchedAt: 0 };
+        }
     } catch (e) {
-        sendError(res, "News fetch failed");
+        console.error("News refresh failed:", e.message);
+        cache.news = { data: null, fetchedAt: 0 };
     }
+}
+
+// ===================== POLLING =====================
+
+function startPolling() {
+    refreshRealtime();
+    refreshAlerts();
+    refreshWeather();
+    refreshNews();
+
+    setInterval(refreshRealtime, INTERVALS.realtime);
+    setInterval(refreshAlerts,   INTERVALS.alerts);
+    setInterval(refreshWeather,  INTERVALS.weather);
+    setInterval(refreshNews,     INTERVALS.news);
+}
+
+// ===================== ROUTES =====================
+
+app.get("/api/data", (_req, res) => {
+    res.set(JSON_HEADERS).json({
+        realtime: getCached("realtime"),
+        alerts:   getCached("alerts"),
+        weather:  getCached("weather"),
+        news:     getCached("news"),
+    });
 });
 
 app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}`);
+    startPolling();
 });
