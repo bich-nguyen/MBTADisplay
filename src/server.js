@@ -37,6 +37,24 @@ function getCached(key) {
 
 // ===================== FETCHERS =====================
 
+function trimSchedules(json) {
+    if (!json?.data) return json;
+    const cutoff = Date.now() + 120 * 60_000;
+    const kept = json.data.filter((s) => {
+        const t = s.attributes.departure_time ?? s.attributes.arrival_time;
+        return t && new Date(t).getTime() <= cutoff;
+    });
+    const keptTripIds = new Set(kept.map((s) => s.relationships?.trip?.data?.id).filter(Boolean));
+    const included = (json.included ?? []).filter((item) => {
+        if (item.type === "prediction" || item.type === "trip") {
+            const id = item.type === "trip" ? item.id : item.relationships?.trip?.data?.id;
+            return keptTripIds.has(id);
+        }
+        return true;
+    });
+    return { ...json, data: kept, included };
+}
+
 async function refreshRealtime() {
     if (!MBTA_API_KEY) return;
     const results = {};
@@ -55,7 +73,7 @@ async function refreshRealtime() {
                     if (svc.directionId !== undefined) params.set("filter[direction_id]", String(svc.directionId));
                     const res = await fetch(`https://api-v3.mbta.com/schedules?${params}`);
                     if (!res.ok) throw new Error(`MBTA schedule ${res.status} for ${key}`);
-                    results[key] = await res.json();
+                    results[key] = trimSchedules(await res.json());
                 })
             )
         );
