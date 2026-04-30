@@ -1,7 +1,5 @@
-/* ----- MBTA SCREENS SYSTEM ----- */
-/* Maximum readability for distant, short-viewing-time displays */
+/* Portrait 1080x1920 fixed target */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
 
@@ -10,6 +8,7 @@
    ================================================================ */
 
 :root {
+<<<<<<< HEAD
     --mbta-green: #00843d;
     --mbta-red: #da291c;
     --mbta-blue: #003da5;
@@ -17,15 +16,11 @@
     --mbta-commuter: #80276c;
     --mbta-bus: #ffc72c;
     --mbta-bluebike: #2277b3;
+=======
+>>>>>>> aed42cfdb33119cd70038fb56a669d05e14323fc
     --mbta-cool-black-15: #171f26;
-    --mbta-warm-white-90: #e6e4e1;
-    --mbta-warm-white-85: #d9d6d0;
-    --mbta-warm-white-80: #cccbc8;
-    --mbta-true-white: #ffffff;
-
-    --font-family-mono:
-        "Helvetica Neue", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, Arial, sans-serif;
+    --font-size-body: 18px;
+    --font-size-smaller: 12px;
 }
 
 * {
@@ -34,14 +29,17 @@
     box-sizing: border-box;
 }
 
+<<<<<<< HEAD
 
 /* ================================================================
    BASE
    ================================================================ */
 
+=======
+>>>>>>> aed42cfdb33119cd70038fb56a669d05e14323fc
 body {
-    background: var(--mbta-warm-white-90);
-    font-family: var(--font-family-mono);
+    background: #ffffff;
+    font-family: Arial, sans-serif;
     color: var(--mbta-cool-black-15);
     line-height: 1.3;
     padding: 1.25rem;
@@ -50,6 +48,7 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+<<<<<<< HEAD
     gap: 1.25rem;
 }
 
@@ -99,36 +98,29 @@ body {
     min-height: 0;
     display: grid;
     grid-template-columns: 1fr;
+=======
+>>>>>>> aed42cfdb33119cd70038fb56a669d05e14323fc
     gap: 1.5rem;
-    margin-bottom: 2rem;
 }
 
-.container-5 {
+/* ===== MAIN LAYOUT ===== */
+.dashboard {
     flex: 1;
     min-height: 0;
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: row;
     gap: 1.5rem;
-    margin-bottom: 2rem;
 }
 
-.container-ferry {
-    display: grid;
-    grid-template-columns: calc(50% - 0.625rem) calc(50% - 0.625rem);
-    grid-auto-rows: min-content;
-    grid-auto-flow: row;
-    gap: 1.25rem;
-}
-
-/* Propagate height through grid cell → predictions → card */
-.container-1 > div,
-.container-2 > div,
-.container-3 > div {
+.col-left {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    min-height: 0;
+    gap: 5rem;
 }
 
+<<<<<<< HEAD
 .predictions {
     flex: 1;
     display: flex;
@@ -188,18 +180,57 @@ body {
 .bi {
     display: inline-block;
     padding-right: 0.4rem;
+=======
+.col-right {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* ===== CARD ===== */
+.card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    font-family: Arial, sans-serif;
+}
+
+.card-header {
+    color: #1c1e23;
+    font-size: var(--font-size-body);
+    font-weight: 700;
+    padding: 8px 15px;
+    border-radius: 3px 3px 0 0;
+    border-bottom: 1px solid #e0e0e0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+}
+
+.header-station {
+    font-weight: 700;
+    font-size: 23px;
+}
+
+.walk-min {
+    font-size: var(--font-size-body);
+    font-weight: 400;
+    color: #616161;
+    margin-left: auto;
+    white-space: nowrap;
+>>>>>>> aed42cfdb33119cd70038fb56a669d05e14323fc
 }
 
 .card-body {
-    background: #f2f3f5;
-    flex: 1;
-    min-height: 0;
     display: flex;
     flex-direction: column;
-    border-radius: 0 0 3px 3px;
-    overflow-y: hidden;
 }
 
+<<<<<<< HEAD
 /* ----- Route colors ----- */
 
 .route-Red .card-header    { background: #da291c; }
@@ -229,34 +260,63 @@ body {
 
 .direction-header {
     font-size: 20px;
+=======
+/* ===== LINE PILLS ===== */
+.line-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: var(--font-size-smaller);
+>>>>>>> aed42cfdb33119cd70038fb56a669d05e14323fc
     font-weight: 700;
-    text-transform: uppercase;
-    color: #616161;
-    padding: 12px 20px 4px;
+    letter-spacing: 0.05em;
+    color: #fff;
     flex-shrink: 0;
 }
 
+<<<<<<< HEAD
+=======
+.pill-red    { background: #da291c; }
+.pill-orange { background: #ed8b00; }
+.pill-blue   { background: #003da5; }
+.pill-green  { background: #00843d; }
+.pill-cr     { background: #80276c; }
+.pill-boat   { background: #add8e6; color: #1c1e23; }
+
+/* ===== PREDICTION ROWS ===== */
+>>>>>>> aed42cfdb33119cd70038fb56a669d05e14323fc
 .prediction-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 14px 20px;
     border-top: 1px solid #d7d8da;
 }
 
+<<<<<<< HEAD
 .prediction-row:last-child {
     border-bottom: none;
 }
 
+=======
+>>>>>>> aed42cfdb33119cd70038fb56a669d05e14323fc
 .destination-main {
-    font-size: 20px;
+    font-size: var(--font-size-body);
     font-weight: 700;
     color: #1c1e23;
+<<<<<<< HEAD
 }
 
 .destination-via {
     font-size: 20px;
     color: #555;
+=======
+    flex: 1;
+    text-align: left;
+    padding-left: 20px;
+>>>>>>> aed42cfdb33119cd70038fb56a669d05e14323fc
 }
 
 .pred-times {
@@ -266,7 +326,7 @@ body {
 }
 
 .pred-time {
-    font-size: 20px;
+    font-size: var(--font-size-body);
     min-width: 80px;
     text-align: left;
 }
@@ -274,6 +334,7 @@ body {
 .pred-time.realtime  { color: #00843d; }
 .pred-time.scheduled { color: var(--mbta-cool-black-15); }
 
+<<<<<<< HEAD
 
 /* ================================================================
    COMMUTER RAIL & FERRY GRIDS
@@ -285,6 +346,99 @@ body {
 
 .cr-grid {
     grid-template-columns: 1fr 2fr 4fr 4fr;
+=======
+.no-trains {
+    padding: 14px 20px;
+    font-size: var(--font-size-body);
+    color: #616161;
+}
+
+/* ===== FERRY ===== */
+.ferry-grid {
+    display: grid;
+    grid-template-columns: 2fr 3fr 3fr;
+}
+
+.ferry-stop,
+.ferry-line {
+    border-top: 1px solid #d7d8da;
+    padding: 3px 20px;
+    font-weight: 600;
+    font-size: var(--font-size-body);
+}
+
+.ferry-times {
+    display: flex;
+    gap: 30px;
+    font-weight: 700;
+    font-size: var(--font-size-body);
+    align-items: center;
+    border-top: 1px solid #d7d8da;
+    padding: 3px 20px;
+}
+
+.ferry-times .pred-time {
+    min-width: 90px;
+}
+
+/* ===== MAP ===== */
+#map-container {
+    flex-shrink: 0;
+    width: 100%;
+    height: 606px;
+    background: #e8e8e8;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#map-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+#map-image[src=""] {
+    display: none;
+}
+
+/* ===== NEWS TICKER ===== */
+#news-ticker {
+    flex-shrink: 0;
+    width: 100%;
+    overflow: hidden;
+    padding: 6px 0;
+}
+
+#ticker-track {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: ticker-scroll 60s linear infinite;
+    will-change: transform;
+}
+
+.ticker-item {
+    font-size: var(--font-size-body);
+    font-weight: 700;
+    color: #1c1e23;
+    padding: 0 12px;
+    white-space: nowrap;
+}
+
+.ticker-sep {
+    font-size: var(--font-size-smaller);
+    color: #888;
+    padding: 0 4px;
+    align-self: center;
+}
+
+@keyframes ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+>>>>>>> aed42cfdb33119cd70038fb56a669d05e14323fc
 }
 
 .ferry-grid,
@@ -415,11 +569,10 @@ body {
 }
 
 .weather-card-body {
-    height: auto;
     flex-direction: row;
     align-items: center;
     gap: 20px;
-    padding: 0;
+    padding: 0 20px;
     background: none !important;
 }
 
@@ -434,31 +587,18 @@ body {
     line-height: 1;
 }
 
-.weather-spacer {
-    flex: 1;
+.weather-desc {
+    font-size: var(--font-size-body);
+    font-weight: 500;
+    color: #616161;
 }
+
+.weather-spacer { flex: 1; }
 
 .weather-right-group {
     display: flex;
-    flex-direction: row;
     align-items: center;
     gap: 16px;
-}
-
-.weather-meta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 2px;
-}
-
-.weather-date,
-.weather-location {
-    font-size: 20px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    opacity: 0.7;
 }
 
 #timestamp {
@@ -467,6 +607,7 @@ body {
     font-weight: 700;
 }
 
+<<<<<<< HEAD
 
 /* ================================================================
    RSS / NEWS
@@ -566,3 +707,7 @@ body {
     .card-header  { font-size: 25px; }
     .station-name { padding: 20px 0px; }
 }
+=======
+/* ===== MISC ===== */
+.bi { display: inline-block; padding-right: 0.4rem; }
+>>>>>>> aed42cfdb33119cd70038fb56a669d05e14323fc
