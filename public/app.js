@@ -1070,5 +1070,5 @@ function startContainerRotation() {
 // ===================== START =====================
 console.log("Starting scalable MBTA tracker");
 startClock();
-startContainerRotation();
+if (!document.body.dataset.noRotate) startContainerRotation();
 updateAll();
