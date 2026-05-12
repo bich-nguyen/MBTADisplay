@@ -1,6 +1,6 @@
 // ===================== RENDER HELPERS =====================
 
-function getLinePill(routeId) {
+function getLinePill(routeId, title="") {
     if (routeId === "Red")           return '<span class="line-pill pill-red">RL</span>';
     if (routeId === "Orange")        return '<span class="line-pill pill-orange">OL</span>';
     if (routeId === "Blue")          return '<span class="line-pill pill-blue">BL</span>';
@@ -9,7 +9,15 @@ function getLinePill(routeId) {
     if (routeId === "Green-D")       return '<span class="line-pill pill-green">D</span>';
     if (routeId === "Green-E")       return '<span class="line-pill pill-green">E</span>';
     if (routeId.startsWith("CR-"))   return '<span class="line-pill pill-cr">CR</span>';
-    if (routeId.startsWith("Boat-")) return '<span class="line-pill pill-boat">FR</span>';
+    if (routeId === "Boat-F1") return '<span class="line-pill pill-boat">F1</span>';
+    if (routeId === "Boat-F2H") return '<span class="line-pill pill-boat">F2H</span>';
+    if (routeId === "Boat-F4") return '<span class="line-pill pill-boat">F4</span>';
+    if (routeId === "Boat-EastBoston") return '<span class="line-pill pill-boat">F3</span>';
+    if (routeId === "Boat-Lynn") return '<span class="line-pill pill-boat">F5</span>';
+    if (routeId === "Boat-F6") return '<span class="line-pill pill-boat">F6</span>';
+    if (routeId === "Boat-F7") return '<span class="line-pill pill-boat">F7</span>';
+
+
     return "";
 }
 
@@ -201,8 +209,8 @@ function renderFerryPanel(panels, stationClass) {
 
     function entryHTML({ key, panel, destination, preds }) {
         return `
-            <div class="ferry-entry" data-key="${key.replace(/"/g, "&quot;")}" style="display:contents">
-                <div class="ferry-stop">${panel.title}</div>
+            <div class="prediction-row" data-key="${key.replace(/"/g, "&quot;")}" style="display:contents">
+                <div class="ferry-stop">${getLinePill(panel.routeId)} ${panel.title}</div>
                 <div><div class="ferry-line">${destination}</div></div>
                 <div class="ferry-times">${preds.map(predTimeHtml).join("")}</div>
             </div>`;
@@ -231,6 +239,29 @@ function renderFerryPanel(panels, stationClass) {
         existingEntries[i].querySelector(".ferry-times").innerHTML =
             entries[i].preds.map(predTimeHtml).join("");
     }
+}
+
+function renderFerryLegend(stops, stationClass) {
+    const container = document.querySelector(`.${stationClass}`);
+    if (!container) return;
+    const html = `
+    <div class="card route-Boat">
+        <div class="card-header">
+                    <span class="header-station">Ferry Legend</span>
+        </div>
+        <div class="card-body">
+            ${stops.map((stop) => `
+                <div class="ferry-legend">
+                    <span >
+                        ${stop.stop}
+                    </span>
+                <span class="walk-min">${WALK_ICON} ${stop.walkMin} min</span>
+                </div>
+            `).join("")}
+        </div>
+    </div>
+   `;
+    container.innerHTML = html;
 }
 
 function renderWeather() {
