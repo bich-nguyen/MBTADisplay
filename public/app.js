@@ -58,23 +58,31 @@ const CR_NORTH_PANELS = [
 ];
 
 const FERRY_PANELS = [
-    { title: "(F1) RW",   routeId: "Boat-F1",         services: [svc("Boat-F1", 0, "Boat-Rowes", "Hingham")] },
+    { title: "RW",  routeId: "Boat-F1",         services: [svc("Boat-F1", 0, "Boat-Rowes", "Hingham")] },
     {
-        title: "(F2H) LWN", routeId: "Boat-F1",
+        title: "LWN 5A", routeId: "Boat-F2H",
         services: [
-            svc("Boat-F1", 0, "Boat-Long", "Hingham via Hull"),
-            svc("Boat-F1", 0, "Boat-Long", "Hull"),
-            svc("Boat-F1", 0, "Boat-Long", "Hingham via Logan Airport & Hull"),
-            svc("Boat-F1", 0, "Boat-Long", "HingHam via Logan Airport"),
-            svc("Boat-F1", 0, "Boat-Long", "Hingham"),
-            svc("Boat-F1", 0, "Boat-Long", "Hull via Logan Airport"),
+            svc("Boat-F2H", 0, "Boat-Long", "Hull"),
+            svc("Boat-F2H", 0, "Boat-Long", "Hingham"),
         ],
     },
-    { title: "(F4) LWS",  routeId: "Boat-F4",         services: [svc("Boat-F4",         0, "Boat-Long-South", "Charlestown")] },
-    { title: "(F3) LWN",  routeId: "Boat-EastBoston",  services: [svc("Boat-EastBoston",  0, "Boat-Long",       "Lewis Mall")] },
-    { title: "(F5) LWN",  routeId: "Boat-Lynn",        services: [svc("Boat-Lynn",        0, "Boat-Long",       "Blossom Street")] },
-    { title: "(F6) - AQ", routeId: "Boat-F6",          services: [svc("Boat-F6",          0, "Boat-Aquarium",   "Winthrop")] },
-    { title: "(F7) - AQ", routeId: "Boat-F7",          services: [svc("Boat-F7",          0, "Boat-Aquarium",   "Quincy")] },
+    { title: "LWS",  routeId: "Boat-F4",         services: [svc("Boat-F4",         0, "Boat-Long-South", "Charlestown")] },
+    { title: "LWN 5B",  routeId: "Boat-EastBoston",  services: [svc("Boat-EastBoston",  0, "Boat-Long-North-5B",       "Lewis Mall")] },
+    { title: "LWN 5C",  routeId: "Boat-Lynn",        services: [svc("Boat-Lynn",        0, "Boat-Long-North-5C",       "Blossom")] },
+    { title: "CW", routeId: "Boat-F6",          services: [svc("Boat-F6",          1, "Boat-Aquarium",   "Winthrop")] },
+    { title: "SP", routeId: "Boat-F6",          services: [svc("Boat-F6",        1, "Boat-Fan",   "Winthrop")] },
+    { title: "CW", routeId: "Boat-F7",          services: [svc("Boat-F7",          1, "Boat-Aquarium",   "Quincy")] },
+    { title: "SP", routeId: "Boat-F7",          services: [svc("Boat-F7",        1, "Boat-Fan",   "Quincy")] },
+];
+
+const FERRY_STOPS = [
+    { stop: "RW = Rowes Wharf", walkMin: 5 },
+    { stop: "LWN 5A = Long Wharf North 5A", walkMin: 9 },
+    { stop: "LWN 5B = Long Wharf North 5B", walkMin: 11 },
+    { stop: "LWN 5C = Long Wharf North 5C", walkMin: 12 },
+    { stop: "LWS = Long Wharf South", walkMin: 10 },
+    { stop: "CW = Central Wharf/Aquarium", walkMin: 9 },
+    { stop: "SP = Seaport/Fan Pier", walkMin: 13 },
 ];
 
 function startClock() {
@@ -96,6 +104,7 @@ async function updateAll() {
     renderCRPanel(CR_SOUTH_PANELS, "South Station", "south-station-cr", 7);
     renderCRPanel(CR_NORTH_PANELS, "North Station", "north-station-cr", 21);
     renderFerryPanel(FERRY_PANELS, "ferry");
+    renderFerryLegend(FERRY_STOPS, "ferry-stops");
 
     renderNews(cachedNews);
     renderWeather();
@@ -123,9 +132,4 @@ async function initialLoad() {
 }
 
 startClock();
-<<<<<<< HEAD
-if (!document.body.dataset.noRotate) startContainerRotation();
-updateAll();
-=======
 initialLoad();
->>>>>>> aed42cfdb33119cd70038fb56a669d05e14323fc
