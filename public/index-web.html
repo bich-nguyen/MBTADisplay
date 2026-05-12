@@ -5,65 +5,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>PLT-Boston Transit Dashboard</title>
         <link rel="stylesheet" href="styles-web.css" />
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-        />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-            rel="stylesheet"
-        />
     </head>
     <body data-no-rotate>
 
         <!-- ================= WEATHER / HEADER ================= -->
-        <div id="weather-box" class="weather-box"></div>
+        <div id="weather-box"></div>
 
-        <!-- ================= SUBWAY ================= -->
-        <section class="web-section">
-            <h2 class="web-section-title">Subway</h2>
-            <div class="web-grid">
-                <div id="south-station-red">
-                    <div class="predictions"></div>
-                </div>
-                <div id="state-station-orange">
-                    <div class="predictions"></div>
-                </div>
-                <div id="state-station-blue">
-                    <div class="predictions"></div>
-                </div>
-                <div id="park-street-green">
-                    <div class="predictions"></div>
-                </div>
+        <div class="dashboard">
+            <div class="col-left">
+                <div id="south-station-red"></div>
+                <div id="state-station-orange"></div>
+                <div id="park-street-green"></div>
             </div>
-        </section>
-
-        <!-- ================= FERRY ================= -->
-        <section class="web-section">
-            <h2 class="web-section-title">Ferry</h2>
-            <div class="ferry">
-                <div class="predictions"></div>
+            <div class="col-mid">
+                <div class="south-station-cr"></div>
+                <div class="north-station-cr"></div>
             </div>
-        </section>
-
-        <!-- ================= COMMUTER RAIL ================= -->
-        <section class="web-section">
-            <h2 class="web-section-title">Commuter Rail</h2>
-            <div class="south-station-cr">
-                <div class="predictions"></div>
+            <div class="col-right">
+                <div class="ferry"></div>
+                <div class="ferry-stops"></div>
             </div>
-            <div class="north-station-cr" style="margin-top: 1rem;">
-                <div class="predictions"></div>
-            </div>
-        </section>
+        </div>
 
-        <!-- ================= NEWS ================= -->
-        <section class="web-section">
-            <h2 class="web-section-title">News</h2>
-            <div id="news-box"></div>
-        </section>
+        <div id="news-ticker">
+            <div id="ticker-track"></div>
+        </div>
 
+        <script src="config.js"></script>
+        <script src="fetch.js"></script>
+        <script src="render.js"></script>
         <script src="app.js"></script>
     </body>
 </html>
