@@ -179,7 +179,7 @@ body {
     font-weight: 700;
     font-size: var(--font-size-body);
     align-items: center;
-    padding: 3px 20px;
+    padding: 3px 10px;
 }
 
 .ferry-stop,
