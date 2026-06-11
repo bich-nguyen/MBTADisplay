@@ -169,7 +169,6 @@ body {
 
 .ferry-stop,
 .ferry-line {
-    padding: 3px 10px;
     font-weight: 600;
 }
 
@@ -179,7 +178,6 @@ body {
     font-weight: 700;
     font-size: var(--font-size-body);
     align-items: center;
-    padding: 3px 10px;
 }
 
 .ferry-stop,
@@ -228,12 +226,12 @@ body {
 #ticker-track {
     display: inline-flex;
     white-space: nowrap;
-    animation: ticker-scroll 60s linear infinite;
+    animation: ticker-scroll 120s linear infinite;
     will-change: transform;
 }
 
 .ticker-item {
-    font-size: var(--font-size-body);
+    font-size: 24px;
     font-weight: 700;
     color: #1c1e23;
     padding: 0 12px;
