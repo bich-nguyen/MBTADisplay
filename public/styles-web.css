@@ -3,7 +3,7 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
 html {
-    font-size: clamp(12px, min(0.8333vw, 1.4815vh), 16px);
+    font-size: clamp(12px, 0.8333vw, 16px);
 }
 
 :root {
