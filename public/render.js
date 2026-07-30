@@ -285,6 +285,7 @@ function renderWeather() {
 }
 
 const DEFAULT_HEADLINE = "Live MBTA departures and service updates";
+const TICKER_SPEED_PX_PER_SEC = 70;
 
 function renderNews(articles) {
     const track = document.getElementById("ticker-track");
@@ -295,5 +296,12 @@ function renderNews(articles) {
     const sep = '<span class="ticker-sep">▪</span>';
     const items = titles.map((t) => `<span class="ticker-item">${t}</span>`).join(sep);
     const content = items + sep + items + sep;
-    if (track.innerHTML !== content) track.innerHTML = content;
+    if (track.innerHTML === content) return;
+
+    track.innerHTML = content;
+    // Scroll at a constant speed rather than a fixed duration — a fixed
+    // duration covers more pixels (and looks faster) as headline count grows.
+    const singleCopyWidth = track.scrollWidth / 2;
+    const duration = Math.max(singleCopyWidth / TICKER_SPEED_PX_PER_SEC, 20);
+    track.style.animationDuration = `${duration}s`;
 }
