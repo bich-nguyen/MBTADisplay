@@ -160,9 +160,10 @@ body {
 }
 
 .header-station {
-    font-weight: 700;
+    font-weight: 800;
     font-size: 19px;
     letter-spacing: .08em;
+    -webkit-text-stroke: 0.4px currentColor;
 }
 
 .walk-min {
@@ -214,11 +215,12 @@ body {
 }
 
 .destination {
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 19px;
+    font-weight: 700;
     letter-spacing: .04em;
     color: var(--text-primary);
     text-wrap: pretty;
+    -webkit-text-stroke: 0.4px currentColor;
 }
 
 .dep-next,
