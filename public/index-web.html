@@ -7,28 +7,32 @@
         <link rel="stylesheet" href="styles-web.css" />
     </head>
     <body data-no-rotate>
+        <div class="board">
+            <!-- ================= WEATHER / HEADER ================= -->
+            <div id="weather-box"></div>
 
-        <!-- ================= WEATHER / HEADER ================= -->
-        <div id="weather-box"></div>
+            <div class="dashboard">
+                <div class="col-left">
+                    <div id="south-station-red"></div>
+                    <div id="state-station-orange"></div>
+                    <div id="park-street-green"></div>
+                </div>
+                <div class="col-mid">
+                    <div class="south-station-cr"></div>
+                    <div class="north-station-cr"></div>
+                </div>
+                <div class="col-right">
+                    <div class="ferry"></div>
+                    <div class="ferry-stops"></div>
+                </div>
+            </div>
 
-        <div class="dashboard">
-            <div class="col-left">
-                <div id="south-station-red"></div>
-                <div id="state-station-orange"></div>
-                <div id="park-street-green"></div>
+            <div id="news-ticker">
+                <span class="ticker-label">News</span>
+                <div class="ticker-viewport">
+                    <div id="ticker-track"></div>
+                </div>
             </div>
-            <div class="col-mid">
-                <div class="south-station-cr"></div>
-                <div class="north-station-cr"></div>
-            </div>
-            <div class="col-right">
-                <div class="ferry"></div>
-                <div class="ferry-stops"></div>
-            </div>
-        </div>
-
-        <div id="news-ticker">
-            <div id="ticker-track"></div>
         </div>
 
         <script src="config.js"></script>

@@ -6,9 +6,19 @@ const SUBWAY_STATION_GROUPS = [
     { stationName: "Park Street",   elementId: "park-street-green",     walkMin: 16, panelRouteIds: ["Green"] },
 ];
 
-const LIVE_ICON     = '<i class="bi bi-broadcast-pin" style="font-size:0.9em; margin-right:4px;"></i>';
-const SCHEDULE_ICON = '<i class="bi bi-calendar-date"></i>';
-const WALK_ICON     = '<i class="bi bi-person-walking"></i>';
+// Ferry dock lookup — keyed by FERRY_PANELS[].title in app.js
+const DOCKS = {
+    "RW":     { name: "Rowes Wharf",         walkMin: 5 },
+    "LWN 5A": { name: "Long Wharf North 5A", walkMin: 9 },
+    "LWN 5B": { name: "Long Wharf North 5B", walkMin: 11 },
+    "LWN 5C": { name: "Long Wharf North 5C", walkMin: 12 },
+    "LWS":    { name: "Long Wharf South",    walkMin: 10 },
+    "CW":     { name: "Central Wharf",       walkMin: 9 },
+    "SP":     { name: "Seaport / Fan Pier",  walkMin: 13 },
+};
+
+const FERRY_WALK_RANGE = "5–13 min walk";
+const FERRY_FOOTNOTE = "Rowes Wharf 5 min · Long Wharf N 9–12 min · Long Wharf S 10 min · Central Wharf 9 min · Seaport 13 min";
 
 function buildKey(panel, svc) {
     const routeId = svc.routeId ?? panel.routeId;

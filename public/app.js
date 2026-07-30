@@ -75,21 +75,16 @@ const FERRY_PANELS = [
     { title: "SP", routeId: "Boat-F7",          services: [svc("Boat-F7",        1, "Boat-Fan",   "Quincy")] },
 ];
 
-const FERRY_STOPS = [
-    { stop: "RW = Rowes Wharf", walkMin: 5 },
-    { stop: "LWN 5A = Long Wharf North 5A", walkMin: 9 },
-    { stop: "LWN 5B = Long Wharf North 5B", walkMin: 11 },
-    { stop: "LWN 5C = Long Wharf North 5C", walkMin: 12 },
-    { stop: "LWS = Long Wharf South", walkMin: 10 },
-    { stop: "CW = Central Wharf/Aquarium", walkMin: 9 },
-    { stop: "SP = Seaport/Fan Pier", walkMin: 13 },
-];
-
 function startClock() {
     function tick() {
+        const now = new Date();
         const ts = document.getElementById("timestamp");
-        if (ts) ts.textContent = new Date().toLocaleTimeString([], {
+        if (ts) ts.textContent = now.toLocaleTimeString([], {
             hour: "2-digit", minute: "2-digit", second: "2-digit",
+        });
+        const dl = document.getElementById("date-label");
+        if (dl) dl.textContent = now.toLocaleDateString([], {
+            weekday: "short", month: "short", day: "numeric",
         });
     }
     tick();
@@ -103,8 +98,8 @@ async function updateAll() {
 
     renderCRPanel(CR_SOUTH_PANELS, "South Station", "south-station-cr", 7);
     renderCRPanel(CR_NORTH_PANELS, "North Station", "north-station-cr", 21);
-    renderFerryPanel(FERRY_PANELS, "ferry");
-    renderFerryLegend(FERRY_STOPS, "ferry-stops");
+    renderFerryPanel(FERRY_PANELS, "ferry", FERRY_WALK_RANGE);
+    renderFerryFootnote(FERRY_FOOTNOTE, "ferry-stops");
 
     renderNews(cachedNews);
     renderWeather();

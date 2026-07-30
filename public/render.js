@@ -1,56 +1,47 @@
 // ===================== RENDER HELPERS =====================
 
-function getLinePill(routeId, title="") {
-    if (routeId === "Red")           return '<span class="line-pill pill-red">RL</span>';
-    if (routeId === "Orange")        return '<span class="line-pill pill-orange">OL</span>';
-    if (routeId === "Blue")          return '<span class="line-pill pill-blue">BL</span>';
-    if (routeId === "Green-B")       return '<span class="line-pill pill-green">B</span>';
-    if (routeId === "Green-C")       return '<span class="line-pill pill-green">C</span>';
-    if (routeId === "Green-D")       return '<span class="line-pill pill-green">D</span>';
-    if (routeId === "Green-E")       return '<span class="line-pill pill-green">E</span>';
-    if (routeId.startsWith("CR-"))   return '<span class="line-pill pill-cr">CR</span>';
-    if (routeId === "Boat-F1") return '<span class="line-pill pill-boat">F1</span>';
-    if (routeId === "Boat-F2H") return '<span class="line-pill pill-boat">F2H</span>';
-    if (routeId === "Boat-F4") return '<span class="line-pill pill-boat">F4</span>';
-    if (routeId === "Boat-EastBoston") return '<span class="line-pill pill-boat">F3</span>';
-    if (routeId === "Boat-Lynn") return '<span class="line-pill pill-boat">F5</span>';
-    if (routeId === "Boat-F6") return '<span class="line-pill pill-boat">F6</span>';
-    if (routeId === "Boat-F7") return '<span class="line-pill pill-boat">F7</span>';
-
+function getBadgeHtml(routeId) {
+    if (routeId === "Red")           return '<span class="badge badge-red">RL</span>';
+    if (routeId === "Orange")        return '<span class="badge badge-orange">OL</span>';
+    if (routeId === "Blue")          return '<span class="badge badge-blue">BL</span>';
+    if (routeId === "Green-B")       return '<span class="badge badge-green">B</span>';
+    if (routeId === "Green-C")       return '<span class="badge badge-green">C</span>';
+    if (routeId === "Green-D")       return '<span class="badge badge-green">D</span>';
+    if (routeId === "Green-E")       return '<span class="badge badge-green">E</span>';
+    if (routeId.startsWith("CR-"))   return '<span class="badge badge-cr">CR</span>';
+    if (routeId === "Boat-F1") return '<span class="badge badge-ferry">F1</span>';
+    if (routeId === "Boat-F2H") return '<span class="badge badge-ferry">F2H</span>';
+    if (routeId === "Boat-F4") return '<span class="badge badge-ferry">F4</span>';
+    if (routeId === "Boat-EastBoston") return '<span class="badge badge-ferry">F3</span>';
+    if (routeId === "Boat-Lynn") return '<span class="badge badge-ferry">F5</span>';
+    if (routeId === "Boat-F6") return '<span class="badge badge-ferry">F6</span>';
+    if (routeId === "Boat-F7") return '<span class="badge badge-ferry">F7</span>';
 
     return "";
 }
 
-function forecastToEmoji(forecast, isDaytime) {
-    const f = forecast.toLowerCase();
-    if (f.includes("blizzard")) return "🌨️❄️💨";
-    if (f.includes("thunderstorm") || f.includes("lightning"))
-        return f.includes("rain") || f.includes("shower") ? "⛈️⚡🌧️" : "⛈️⚡";
-    if (f.includes("freezing rain") || f.includes("sleet") || f.includes("ice pellet")) return "🌨️💧";
-    if (f.includes("heavy snow")) return "❄️🌨️❄️";
-    if (f.includes("snow") || f.includes("flurr")) return "❄️🌨️";
-    if (f.includes("heavy rain")) return "🌧️💧💧";
-    if (f.includes("rain") && (f.includes("wind") || f.includes("bree"))) return "🌧️💨";
-    if (f.includes("shower") && f.includes("sun")) return "🌦️☀️";
-    if (f.includes("rain") || f.includes("shower")) return "🌧️💧";
-    if (f.includes("drizzle")) return "🌦️💧";
-    if (f.includes("dense fog")) return "🌫️🌫️";
-    if (f.includes("fog") || f.includes("haze") || f.includes("mist") || f.includes("smoke")) return "🌫️";
-    if (f.includes("mostly sunny") && (f.includes("wind") || f.includes("bree"))) return "🌤️💨";
-    if (f.includes("partly sunny") || f.includes("mostly sunny")) return "🌤️";
-    if (f.includes("partly cloudy")) return isDaytime ? "⛅" : "🌙⛅";
-    if (f.includes("mostly cloudy")) return "🌥️☁️";
-    if (f.includes("cloudy") || f.includes("overcast")) return "☁️☁️";
-    if (f.includes("sunny") || f.includes("clear")) {
-        if (f.includes("wind") || f.includes("bree")) return isDaytime ? "☀️💨" : "🌙💨";
-        return isDaytime ? "☀️" : "🌙✨";
+// NWS hourly forecast has no apparent-temperature field — approximate it
+// from temperature + humidity (heat index) or temperature + wind (wind chill).
+function computeFeelsLike(tempF, relHumidityPct, windMph) {
+    if (tempF >= 80 && relHumidityPct != null) {
+        const T = tempF, R = relHumidityPct;
+        const hi = -42.379 + 2.04901523 * T + 10.14333127 * R - 0.22475541 * T * R
+            - 0.00683783 * T * T - 0.05481717 * R * R + 0.00122874 * T * T * R
+            + 0.00085282 * T * R * R - 0.00000199 * T * T * R * R;
+        return Math.round(hi);
     }
-    if (f.includes("wind") || f.includes("bree")) return "💨💨";
-    return isDaytime ? "🌡️" : "🌙";
+    if (tempF <= 50 && windMph >= 3) {
+        const T = tempF, V = windMph;
+        const wc = 35.74 + 0.6215 * T - 35.75 * Math.pow(V, 0.16) + 0.4275 * T * Math.pow(V, 0.16);
+        return Math.round(wc);
+    }
+    return Math.round(tempF);
 }
 
-function predTimeHtml(p) {
-    return `<div class="pred-time ${p.isRealtime ? "realtime" : "scheduled"}">${p.isRealtime ? LIVE_ICON : SCHEDULE_ICON} ${formatTime(p.minutes)}</div>`;
+function depCellHtml(p, variant) {
+    if (!p) return `<div class="dep-${variant}">—</div>`;
+    const dot = p.isRealtime ? `<span class="live-dot live-dot-${variant}"></span>` : "";
+    return `<div class="dep-${variant}">${dot}${formatTime(p.minutes)}</div>`;
 }
 
 function keysMatch(a, b) {
@@ -80,27 +71,20 @@ function renderStationGroup(group) {
         });
     });
 
-    const GREEN_BRANCH_ORDER = { B: 0, C: 1, D: 2, E: 3 };
     const destinations = [...byDestination.entries()].map(([headsign, data]) => {
         data.times.sort((a, b) => a.minutes - b.minutes);
         return { headsign, ...data };
     });
-    destinations.sort((a, b) => {
-        if (a.routeId.startsWith("Green-") && b.routeId.startsWith("Green-")) {
-            const diff = (GREEN_BRANCH_ORDER[a.routeId.split("-")[1]] ?? 99) -
-                         (GREEN_BRANCH_ORDER[b.routeId.split("-")[1]] ?? 99);
-            if (diff !== 0) return diff;
-        }
-        return a.times[0].minutes - b.times[0].minutes;
-    });
+    destinations.sort((a, b) => a.times[0].minutes - b.times[0].minutes);
 
     function rowsHTML() {
         return destinations.length
             ? destinations.map(({ headsign, routeId, times }) => `
                 <div class="prediction-row" data-headsign="${headsign.replace(/"/g, "&quot;")}">
-                    ${getLinePill(routeId)}
-                    <div class="destination-main">${headsign}</div>
-                    <div class="pred-times">${times.slice(0, 2).map(predTimeHtml).join("")}</div>
+                    ${getBadgeHtml(routeId)}
+                    <div class="destination">${headsign}</div>
+                    ${depCellHtml(times[0], "next")}
+                    ${depCellHtml(times[1], "following")}
                 </div>`).join("")
             : `<div class="no-trains">No service</div>`;
     }
@@ -111,7 +95,7 @@ function renderStationGroup(group) {
             <div class="card">
                 <div class="card-header">
                     <span class="header-station">${group.stationName}</span>
-                    <span class="walk-min">${WALK_ICON} ${group.walkMin} min</span>
+                    <span class="walk-min">${group.walkMin} min walk</span>
                 </div>
                 <div class="card-body">${rowsHTML()}</div>
             </div>`;
@@ -128,8 +112,8 @@ function renderStationGroup(group) {
     }
 
     for (let i = 0; i < existingRows.length; i++) {
-        existingRows[i].querySelector(".pred-times").innerHTML =
-            destinations[i].times.slice(0, 2).map(predTimeHtml).join("");
+        existingRows[i].querySelector(".dep-next").outerHTML = depCellHtml(destinations[i].times[0], "next");
+        existingRows[i].querySelector(".dep-following").outerHTML = depCellHtml(destinations[i].times[1], "following");
     }
 }
 
@@ -146,12 +130,15 @@ function renderCRPanel(panels, stationName, stationClass, walkMin) {
         return { panel, preds: allPreds.slice(0, 2) };
     }).filter(({ preds }) => preds.length > 0);
 
+    panelData.sort((a, b) => a.preds[0].minutes - b.preds[0].minutes);
+
     function rowsHTML() {
         return panelData.map(({ panel, preds }) => `
             <div class="prediction-row" data-title="${panel.title.replace(/"/g, "&quot;")}">
-                ${getLinePill(panel.routeId)}
-                <div class="destination-main">${panel.title}</div>
-                <div class="pred-times">${preds.map(predTimeHtml).join("")}</div>
+                ${getBadgeHtml(panel.routeId)}
+                <div class="destination">${panel.title}</div>
+                ${depCellHtml(preds[0], "next")}
+                ${depCellHtml(preds[1], "following")}
             </div>`).join("");
     }
 
@@ -161,7 +148,7 @@ function renderCRPanel(panels, stationName, stationClass, walkMin) {
             <div class="card">
                 <div class="card-header">
                     <span class="header-station">${stationName}</span>
-                    <span class="walk-min">${WALK_ICON} ${walkMin} min</span>
+                    <span class="walk-min">${walkMin} min walk</span>
                 </div>
                 <div class="card-body">${rowsHTML()}</div>
             </div>`;
@@ -178,16 +165,15 @@ function renderCRPanel(panels, stationName, stationClass, walkMin) {
     }
 
     for (let i = 0; i < existingRows.length; i++) {
-        existingRows[i].querySelector(".pred-times").innerHTML =
-            panelData[i].preds.map(predTimeHtml).join("");
+        existingRows[i].querySelector(".dep-next").outerHTML = depCellHtml(panelData[i].preds[0], "next");
+        existingRows[i].querySelector(".dep-following").outerHTML = depCellHtml(panelData[i].preds[1], "following");
     }
 }
 
-function renderFerryPanel(panels, stationClass) {
+function renderFerryPanel(panels, stationClass, walkText) {
     const container = document.querySelector(`.${stationClass}`);
     if (!container) return;
 
-    // Build entry data — one entry per visible (panel, base-destination) pair
     const entries = panels.flatMap((panel) => {
         const groups = new Map();
         for (const svc of panel.services) {
@@ -207,12 +193,20 @@ function renderFerryPanel(panels, stationClass) {
         }).filter(Boolean);
     });
 
+    entries.sort((a, b) => a.preds[0].minutes - b.preds[0].minutes);
+
     function entryHTML({ key, panel, destination, preds }) {
+        const dock = DOCKS[panel.title];
+        const dockLine = dock ? `From ${dock.name} · ${dock.walkMin} min walk` : "";
         return `
-            <div class="prediction-row" data-key="${key.replace(/"/g, "&quot;")}" style="display:contents">
-                <div class="ferry-stop">${getLinePill(panel.routeId)} ${panel.title}</div>
-                <div><div class="ferry-line">${destination}</div></div>
-                <div class="ferry-times">${preds.map(predTimeHtml).join("")}</div>
+            <div class="prediction-row ferry-row" data-key="${key.replace(/"/g, "&quot;")}">
+                ${getBadgeHtml(panel.routeId)}
+                <div class="destination-block">
+                    <div class="destination">${destination}</div>
+                    <div class="dock-line">${dockLine}</div>
+                </div>
+                ${depCellHtml(preds[0], "next")}
+                ${depCellHtml(preds[1], "following")}
             </div>`;
     }
 
@@ -220,48 +214,38 @@ function renderFerryPanel(panels, stationClass) {
     if (!card) {
         container.innerHTML = `
             <div class="card">
-                <div class="card-header"><span class="header-station">Ferry</span></div>
-                <div class="card-body"><div class="ferry-grid">${entries.map(entryHTML).join("")}</div></div>
+                <div class="card-header">
+                    <span class="header-station">Ferry</span>
+                    <span class="walk-min">${walkText}</span>
+                </div>
+                <div class="card-body">${entries.map(entryHTML).join("")}</div>
             </div>`;
         return;
     }
 
-    const grid = card.querySelector(".ferry-grid");
-    const existingEntries = [...grid.querySelectorAll(".ferry-entry[data-key]")];
+    const body = card.querySelector(".card-body");
+    const existingRows = [...body.querySelectorAll(".ferry-row[data-key]")];
     const newKeys = entries.map((e) => e.key);
 
-    if (!keysMatch(existingEntries.map((e) => e.dataset.key), newKeys)) {
-        grid.innerHTML = entries.map(entryHTML).join("");
+    if (!keysMatch(existingRows.map((e) => e.dataset.key), newKeys)) {
+        body.innerHTML = entries.map(entryHTML).join("");
         return;
     }
 
-    for (let i = 0; i < existingEntries.length; i++) {
-        existingEntries[i].querySelector(".ferry-times").innerHTML =
-            entries[i].preds.map(predTimeHtml).join("");
+    for (let i = 0; i < existingRows.length; i++) {
+        existingRows[i].querySelector(".dep-next").outerHTML = depCellHtml(entries[i].preds[0], "next");
+        existingRows[i].querySelector(".dep-following").outerHTML = depCellHtml(entries[i].preds[1], "following");
     }
 }
 
-function renderFerryLegend(stops, stationClass) {
+function renderFerryFootnote(text, stationClass) {
     const container = document.querySelector(`.${stationClass}`);
     if (!container) return;
-    const html = `
-    <div class="card route-Boat">
-        <div class="card-header">
-                    <span class="header-station">Ferry Legend</span>
-        </div>
-        <div class="card-body">
-            ${stops.map((stop) => `
-                <div class="ferry-legend">
-                    <span >
-                        ${stop.stop}
-                    </span>
-                <span class="walk-min">${WALK_ICON} ${stop.walkMin} min</span>
-                </div>
-            `).join("")}
-        </div>
-    </div>
-   `;
-    container.innerHTML = html;
+    container.innerHTML = `
+        <div class="footnote-card">
+            <div class="footnote-label">Docks</div>
+            <div class="footnote-text">${text}</div>
+        </div>`;
 }
 
 function renderWeather() {
@@ -270,35 +254,46 @@ function renderWeather() {
 
     const current = cachedWeather[0];
     const tempF = Math.round(current.temperature);
-    const emoji = forecastToEmoji(current.shortForecast, current.isDaytime);
+    const windMph = parseFloat(current.windSpeed) || 0;
+    const humidity = current.relativeHumidity?.value ?? null;
+    const feelsLike = computeFeelsLike(tempF, humidity, windMph);
+    const windText = current.windSpeed && current.windDirection
+        ? `Wind ${current.windSpeed} ${current.windDirection}`
+        : "";
+    const detail = [`Feels like ${feelsLike}°`, windText].filter(Boolean).join(" · ");
 
-    const card = container.querySelector(".weather-card");
-    if (!card) {
+    const built = container.querySelector(".weather-temp");
+    if (!built) {
         container.innerHTML = `
-            <div class="card weather-card">
-                <div class="card-body weather-card-body">
-                    <span class="weather-temp">${tempF}°</span>
-                    <span class="weather-emoji">${emoji}</span>
-                    <span class="weather-desc">${current.shortForecast}</span>
-                    <div class="weather-spacer"></div>
-                    <div class="weather-right-group">
-                        <div id="timestamp"></div>
-                    </div>
+            <div class="header-left">
+                <div class="weather-temp">${tempF}°</div>
+                <div class="weather-condition-group">
+                    <div class="weather-condition">${current.shortForecast}</div>
+                    <div class="weather-detail">${detail}</div>
                 </div>
+            </div>
+            <div class="header-right">
+                <div id="date-label" class="date-label"></div>
+                <div id="timestamp" class="clock"></div>
             </div>`;
         return;
     }
 
-    card.querySelector(".weather-temp").textContent = `${tempF}°`;
-    card.querySelector(".weather-emoji").textContent = emoji;
-    card.querySelector(".weather-desc").textContent = current.shortForecast;
+    container.querySelector(".weather-temp").textContent = `${tempF}°`;
+    container.querySelector(".weather-condition").textContent = current.shortForecast;
+    container.querySelector(".weather-detail").textContent = detail;
 }
+
+const DEFAULT_HEADLINE = "Live MBTA departures and service updates";
 
 function renderNews(articles) {
     const track = document.getElementById("ticker-track");
-    if (!track || !articles.length) return;
-    const separator = '<span class="ticker-sep">&#9679;</span>';
-    const items = articles.map((a) => `<span class="ticker-item">${a.title}</span>`).join(separator);
-    const content = items + separator + items + separator;
+    if (!track) return;
+    const titles = articles && articles.length
+        ? articles.map((a) => a.title || DEFAULT_HEADLINE)
+        : [DEFAULT_HEADLINE];
+    const sep = '<span class="ticker-sep">▪</span>';
+    const items = titles.map((t) => `<span class="ticker-item">${t}</span>`).join(sep);
+    const content = items + sep + items + sep;
     if (track.innerHTML !== content) track.innerHTML = content;
 }
