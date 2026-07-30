@@ -28,7 +28,7 @@ html {
 }
 
 body {
-    background: #FBFAF7;
+    background: #EDEBE5;
     font-family: "DejaVu Sans", Arial, sans-serif;
     color: var(--text-primary);
     line-height: 1.3;
@@ -37,6 +37,9 @@ body {
     height: 100vh;
     overflow: hidden;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
 }
 
 /* ===== BOARD PANEL ===== */
@@ -44,6 +47,9 @@ body {
     width: 100%;
     height: 100%;
     background: #FBFAF7;
+    border: 1px solid #D8D5CC;
+    border-radius: 14px;
+    box-shadow: 0 22px 60px -30px rgba(26, 26, 24, .35);
     overflow: hidden;
     display: flex;
     flex-direction: column;
